@@ -1,0 +1,7 @@
+flask
+flask-smorest
+black
+sqlalchemy
+flask-sqlalchemy
+psycopg2-binary
+Flask-Cors

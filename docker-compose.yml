@@ -1,0 +1,35 @@
+services:
+  r3vids-api:
+    build: 
+      context: ./
+    extra_hosts:
+    - host.docker.internal:host-gateway
+    ports:
+      - 5000:5000
+    volumes:
+      - .:/app
+    command: flask run --host=0.0.0.0 --reload
+    depends_on:
+      - database
+  database:
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: safepass1
+      POSTGRES_DB: r3vidsf
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdata:/var/lib/postgresql/@database:5432/r3vidsf
+  r3vue:
+    build:
+      context: ./r3vue
+    ports:
+      - "5173:5173"
+    volumes:
+    - ./r3vue:/app
+    - /app/node_modules
+    command: npm run dev
+volumes:
+  pgdata:
+  
