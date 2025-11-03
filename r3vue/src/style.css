@@ -1,64 +1,64 @@
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+    font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
 
-  color-scheme: light dark;
-  color: #ffffffde;
-  background-color: #201449;
-  color: #FFDB60;
+    color-scheme: light dark;
+    color: #ffffffde;
+    background-color: #201449;
+    color: #ffdb60;
 
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 * {
-  margin: 0;
-  padding: 0;
+    margin: 0;
+    padding: 0;
 }
 body {
-  min-height: 100vh;
+    min-height: 100vh;
 }
 li {
-  list-style: none;
-  border: 2px solid;
-  border-radius: 5px;
-  padding: 20px;
-  margin: 10px;
-  width: 83%;
-  cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+    list-style: none;
+    border: 2px solid;
+    border-radius: 5px;
+    padding: 20px;
+    margin: 10px;
+    width: 83%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 button {
-  border: 2px solid #FFDB60;
-  font-size: 20px;
-  padding: 10px;
-  background-color: transparent;
-  border-radius: 5px;
-  color: #FFDB60;
-  margin: 10px;
-  cursor: pointer;
+    border: 2px solid #ffdb60;
+    font-size: 20px;
+    padding: 10px;
+    background-color: transparent;
+    border-radius: 5px;
+    color: #ffdb60;
+    margin: 10px;
+    cursor: pointer;
 }
 button:hover {
-  background-color: #D04C82;
-  color:#201449;
+    background-color: #d04c82;
+    color: #201449;
 }
 input {
-  border: 2px solid #FFDB60;
-  background-color: transparent;
-  font-size: 30px;
-  color: #D04C82;
-  padding: 5px;
-  margin: 10px;
-  border-radius: 5px;
+    border: 2px solid #ffdb60;
+    background-color: transparent;
+    font-size: 30px;
+    color: #d04c82;
+    padding: 5px;
+    margin: 10px;
+    border-radius: 5px;
 }
 h4 {
-  color: #D04C82;
+    color: #d04c82;
 }
 p {
-  color: #D04C82;
+    color: #d04c82;
 }

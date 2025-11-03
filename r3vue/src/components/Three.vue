@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { type Video } from '../App.vue'
-import VideoCard from './VideoCard.vue';
+import { type Video } from "../App.vue"
+import VideoCard from "./VideoCard.vue"
 
-defineProps<{videos: Video[], ipAddress: string}>()
+defineProps<{ videos: Video[]; ipAddress: string }>()
 </script>
 <template>
     <!-- <div class="three">
