@@ -3,9 +3,10 @@ from flask.views import MethodView
 from flask_smorest import Blueprint
 from schemas import VideoSchema
 
-blueprint = Blueprint('video-context', __name__, 'Operations on video context')
+blueprint = Blueprint("video-context", __name__, "Operations on video context")
 
-@blueprint.route('/video-context')
+
+@blueprint.route("/video-context")
 class VideoContextList(MethodView):
     @blueprint.response(200, VideoSchema)
     def get(self):
