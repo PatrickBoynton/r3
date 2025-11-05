@@ -5,7 +5,7 @@ import Two from "./components/Two.vue"
 import Requests from "./requests"
 import { type Video } from "./types"
 
-const ipAddress = "192.168.1.156"
+const ipAddress = import.meta.env.VITE_IP_ADDRESS
 // Two lists are necessary for the search function to work.
 const videos = ref<Video[]>([])
 const videoSearchList = ref<Video[]>([])
