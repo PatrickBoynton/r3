@@ -61,31 +61,20 @@ class SingleVideo(MethodView):
         return video
 
     @blueprint.response(200, VideoSchema(many=False))
-    def put(self, id):
-        video = Video.query.get(id)
+    def put(self, video_id):
+        video = Video.query.get_or_404(video_id)
         video_data = request.get_json()
         print(f"video to update: {video.title}")
         if video:
             print(f"Updating video: {video.title}")
-            video.id = video_data["id"]
-            video.title = video_data["title"]
-            video.url = video_data["url"]
-            video.image = video_data["image"]
-            video.duration = video_data["duration"]
-            video.uploaded_date = video_data["uploaded_date"]
-            video.video_status.id = video_data["video_status"]["id"]
-            video.video_status.played = video_data["video_status"]["played"]
-            video.video_status.current_play_time = video_data["video_status"][
-                "current_play_time"
-            ]
-            video.video_status.play_count = video_data["video_status"]["play_count"]
-            video.video_status.selection_count = video_data["video_status"][
-                "selection_count"
-            ]
-            video.video_status.is_watch_later = video_data["video_status"][
-                "is_watch_later"
-            ]
-            video.video_status.last_played = video_data["video_status"]["last_played"]
+            for key, value in video_data.items():
+                if hasattr(video, key):
+                    setattr(video, key, value)
+
+            for key, value in video_data.get("video_status", {}).items():
+                if hasattr(video.video_status, key):
+                    setattr(video.video_status, key, value)
+
             db.session.commit()
         else:
             print("No video, creating new video.")
@@ -106,6 +95,7 @@ class VideoRandom(MethodView):
     @blueprint.arguments(RandomVideoQueryArgs, location="query")
     @blueprint.response(200, VideoSchema)
     def get(self, filter_args):
+
         if "played" in filter_args:
             random_video = (
                 Video.query.join(VideoStatus)
@@ -113,7 +103,38 @@ class VideoRandom(MethodView):
                 .order_by(func.random())
                 .first()
             )
-            print(f"Unplayed video picked: {random_video.title}")
+            if "lte" in filter_args:
+                random_video = (
+                    Video.query.join(VideoStatus)
+                    .filter(
+                        VideoStatus.played == False,
+                        Video.duration <= int(filter_args["lte"]) * 60,
+                    )
+                    .order_by(func.random())
+                    .first()
+                )
+            if "gte" in filter_args:
+                random_video = (
+                    Video.query.join(VideoStatus)
+                    .filter(
+                        VideoStatus.played == False,
+                        Video.duration <= int(filter_args["gte"]) * 60,
+                    )
+                    .order_by(func.random())
+                    .first()
+                )
+        elif "lte" in filter_args:
+            random_video = (
+                Video.query.filter(Video.duration <= int(filter_args["lte"] * 60))
+                .order_by(func.random())
+                .first()
+            )
+        elif "gte" in filter_args:
+            random_video = (
+                Video.query.filter(Video.duration >= int(filter_args["gte"] * 60))
+                .order_by(func.random())
+                .first()
+            )
         else:
             random_video = Video.query.order_by(func.random()).first()
 
@@ -141,7 +162,9 @@ class VideoUpdate(MethodView):
     @blueprint.response(201, VideoSchema)
     def post(self):
         uploaded_file = request.files["file"]
+
         if uploaded_file.filename != "":
             uploaded_file.save(uploaded_file.filename)
             create_video()
+
         return ""
