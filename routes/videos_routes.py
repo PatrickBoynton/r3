@@ -7,6 +7,7 @@ from sqlalchemy.sql.expression import func
 from models.create_video import create_video
 from flask import request
 from datetime import datetime
+from sqlalchemy import desc
 
 blueprint = Blueprint("videos", __name__, description="Operations on videos")
 
@@ -16,7 +17,11 @@ blueprint = Blueprint("videos", __name__, description="Operations on videos")
 class VideoList(MethodView):
     @blueprint.response(200, VideoSchema(many=True))
     def get(self):
-        return Video.query.all()
+        return (
+            Video.query.join(VideoStatus)
+            .order_by(desc(VideoStatus.last_played).nulls_last())
+            .all()
+        )
 
     @blueprint.response(204)
     def put(self):
@@ -39,11 +44,11 @@ class VideoList(MethodView):
 
 
 # http://192.168.1.156:5000/guid
-@blueprint.route("/videos/<string:id>")
+@blueprint.route("/videos/<string:video_id>")
 class SingleVideo(MethodView):
     @blueprint.response(200, VideoSchema)
-    def get(self, id):
-        video = Video.query.get_or_404(id)
+    def get(self, video_id):
+        video = Video.query.get_or_404(video_id)
         video_context = VideoContext.query.first()
         print(f"video selected: {video.title}")
         if video_context:
@@ -62,18 +67,29 @@ class SingleVideo(MethodView):
 
     @blueprint.response(200, VideoSchema(many=False))
     def put(self, video_id):
-        video = Video.query.get_or_404(video_id)
+        video = Video.query.get(video_id)
         video_data = request.get_json()
-        print(f"video to update: {video.title}")
-        if video:
-            print(f"Updating video: {video.title}")
-            for key, value in video_data.items():
-                if hasattr(video, key):
-                    setattr(video, key, value)
 
-            for key, value in video_data.get("video_status", {}).items():
-                if hasattr(video.video_status, key):
-                    setattr(video.video_status, key, value)
+        if video:
+            video.id = video_data["id"]
+            video.title = video_data["title"]
+            video.url = video_data["url"]
+            video.image = video_data["image"]
+            video.duration = video_data["duration"]
+            video.uploaded_date = video_data["uploaded_date"]
+            video.video_status.id = video_data["video_status"]["id"]
+            video.video_status.played = video_data["video_status"]["played"]
+            video.video_status.current_play_time = video_data["video_status"][
+                "current_play_time"
+            ]
+            video.video_status.play_count = video_data["video_status"]["play_count"]
+            video.video_status.selection_count = video_data["video_status"][
+                "selection_count"
+            ]
+            video.video_status.is_watch_later = video_data["video_status"][
+                "is_watch_later"
+            ]
+            video.video_status.last_played = video_data["video_status"]["last_played"]
 
             db.session.commit()
         else:
