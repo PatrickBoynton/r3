@@ -28,5 +28,7 @@ else:
 
 if not os.path.exists(data_folder):
     os.makedirs(data_folder)
+else:
+    print("Data folder exists.")
 
 print(f"FINISHED ADDING IP ADDRESS {ip_address}")
