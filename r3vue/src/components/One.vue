@@ -4,12 +4,13 @@ import type { Video } from "../types"
 import Requests from "../requests"
 
 const props = defineProps<{ ipAddress: string }>()
-const emit = defineEmits(["getRandomVideo", "search"])
+const emit = defineEmits(["getRandomVideo", "search", "selectionOption"])
 
 const video = defineModel<Video | null>("video")
 const currentPlayTime = ref(0)
 
 const videoRef = ref<HTMLVideoElement | null>(null)
+const selectionOption = ref("")
 
 const handleInput = (e: any) => {
     emit("search", e.target.value)
@@ -51,27 +52,27 @@ const onPause = () => {
             {{ video?.title || "Click the RV button or click a video card" }}
         </h1>
         <div class="controls">
-            <select name="" id="">
-                <option value="">< 10 Minutes</option>
-                <option value="">< 20 Minutes</option>
-                <option value="">< 30 Minutes</option>
-                <option value="">< 40 Minutes</option>
-                <option value="">< 50 Minutes</option>
-                <option value="">< 60 Minutes</option>
-                <option value="">> 10 Minutes</option>
-                <option value="">> 20 Minutes</option>
-                <option value="">> 30 Minutes</option>
-                <option value="">> 40 Minutes</option>
-                <option value="">> 50 Minutes</option>
-                <option value="">> 60 Minutes</option>
-                <option value="">> 100 Minutes</option>
+            <select v-model="selectionOption" name="" id="">
+                <option value="lte=10">< 10 Minutes</option>
+                <option value="lte=20">< 20 Minutes</option>
+                <option value="lte=30">< 30 Minutes</option>
+                <option value="lte=40">< 40 Minutes</option>
+                <option value="lte=50">< 50 Minutes</option>
+                <option value="lte=60">< 60 Minutes</option>
+                <option value="gte=10">> 10 Minutes</option>
+                <option value="gte=20">> 20 Minutes</option>
+                <option value="gte=30">> 30 Minutes</option>
+                <option value="gte=40">> 40 Minutes</option>
+                <option value="gte=50">> 50 Minutes</option>
+                <option value="gte=60">> 60 Minutes</option>
+                <option value="gte=100">> 100 Minutes</option>
             </select>
-            <button @click="Requests.getRandomVideo(ipAddress, emit)">
+            <button @click="Requests.getRandomVideo(ipAddress, emit, '?' + selectionOption || '')">
                 RV
             </button>
             <button
                 @click="
-                    Requests.getRandomVideo(ipAddress, emit, '?played=false')
+                    Requests.getRandomVideo(ipAddress, emit, '?played=false' + '&' + selectionOption || '')
                 ">
                 RNV
             </button>
