@@ -59,6 +59,8 @@ const handleSearch = (st: any) => {
             :videos="videos"
             :video="video"
             @getVideo="handlePickedVideo" />
+        <!-- Modal -->
+        <Three />
     </div>
 </template>
 

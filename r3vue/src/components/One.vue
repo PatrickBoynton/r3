@@ -8,6 +8,7 @@ const emit = defineEmits(["getRandomVideo", "search", "selectionOption"])
 
 const video = defineModel<Video | null>("video")
 const currentPlayTime = ref(0)
+const showModal = ref(false)
 
 const videoRef = ref<HTMLVideoElement | null>(null)
 const selectionOption = ref("")
@@ -67,18 +68,36 @@ const onPause = () => {
                 <option value="gte=60">> 60 Minutes</option>
                 <option value="gte=100">> 100 Minutes</option>
             </select>
-            <button @click="Requests.getRandomVideo(ipAddress, emit, '?' + selectionOption || '')">
+            <button
+                @click="
+                    Requests.getRandomVideo(
+                        ipAddress,
+                        emit,
+                        '?' + selectionOption || '',
+                    )
+                ">
                 RV
             </button>
             <button
                 @click="
-                    Requests.getRandomVideo(ipAddress, emit, '?played=false' + '&' + selectionOption || '')
+                    Requests.getRandomVideo(
+                        ipAddress,
+                        emit,
+                        '?played=false' + '&' + selectionOption || '',
+                    )
                 ">
                 RNV
             </button>
             <input @input="handleInput" type="text" />
+            <button @click="showModal = true">UL</button>
             <button @click="Requests.deleteVideoStatus(ipAddress)">DVS</button>
         </div>
+    </div>
+    <div v-if="showModal" class="modal">
+        <h1>Upload Video:</h1>
+        <input type="file" name="" id="" />
+        <input type="submit" value="Upload" />
+        <input @click="showModal = false" type="button" value="Close" />
     </div>
 </template>
 <style scoped>
@@ -111,5 +130,24 @@ select {
     color: #ffdb60;
     padding: 10px;
     background-color: transparent;
+}
+.modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #201449d9;
+    border: 2px solid yellow;
+    border-radius: 5px;
+    width: 680px;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.modal input {
+    width: 80%;
+    cursor: pointer;
 }
 </style>
