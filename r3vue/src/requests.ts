@@ -22,7 +22,7 @@ class Requests {
 
     static async getRandomVideo(ipAddress: string, emit: any, query?: string) {
         const response = await fetch(
-            `http://${ipAddress}:5000/videos/random${query || ""}`,
+            `http://${ipAddress}:5000/videos/random${"" || query}`,
         )
         const rv = await response.json()
         emit("getRandomVideo", rv)
