@@ -32,12 +32,14 @@ watch(search, () => {
 })
 
 // Emitters
-const handleRandomVideo = (rv: Video) => {
+const handleRandomVideo = async (rv: Video) => {
     video.value = rv
+    videos.value = await Requests.getVideos(ipAddress)
 }
 
-const handlePickedVideo = (pv: Video | null) => {
+const handlePickedVideo = async (pv: Video | null) => {
     video.value = pv
+    videos.value = await Requests.getVideos(ipAddress)
 }
 
 const handleSearch = (st: any) => {
@@ -49,7 +51,6 @@ const handleSearch = (st: any) => {
     <div class="container">
         <One
             :video="video"
-            :search="search"
             @getRandomVideo="handleRandomVideo"
             @search="handleSearch"
             :ipAddress="ipAddress" />
@@ -59,8 +60,6 @@ const handleSearch = (st: any) => {
             :videos="videos"
             :video="video"
             @getVideo="handlePickedVideo" />
-        <!-- Modal -->
-        <Three />
     </div>
 </template>
 
