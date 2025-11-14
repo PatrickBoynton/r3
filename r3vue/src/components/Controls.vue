@@ -18,7 +18,7 @@ const onRandomVideoSelect = async () => {
     const randomVideo: Video = await Requests.getRandomVideo(
                         props.ipAddress,
                         props.emit,
-                        '?' + selectionOption || '',
+                        '?' + selectionOption.value || '',
                     )
     props.video.value = randomVideo
     await Requests.getVideos(props.ipAddress)
