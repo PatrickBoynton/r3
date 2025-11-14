@@ -1,12 +1,13 @@
 import datetime
-import os, subprocess
+import os
+import subprocess
 
+from db import db
 from models import Video
 from models.video_status import VideoStatus
-from db import db
-from dotenv import load_dotenv
 
-ip_address = os.getenv('IP_ADDRESS')
+ip_address = os.getenv("IP_ADDRESS")
+
 
 def get_duration(file_name):
     result = subprocess.run(
@@ -25,18 +26,6 @@ def get_duration(file_name):
         text=True,
     )
     return float(result.stdout.strip())
-
-
-def get_ip():
-    try:
-        with open("/etc/resolv.conf", "r") as file:
-            for line in file:
-                if "nameserver" in line:
-                    gateway_ip = line.split()[1]
-                    print(f"Found gateway IP {gateway_ip}")
-                    return gateway_ip
-    except:
-        print("FAIL")
 
 
 def create_video():
@@ -61,10 +50,17 @@ def create_video():
             video_status=video_status,
         )
         video_to_check = db.session.query(Video).filter_by(title=video.title).first()
-
         if not video_to_check:
             db.session.add(video)
         else:
             continue
+
+    if db.session.query(Video).first():
+        url_to_check = db.session.query(Video).filter_by(url=video.url).first()
+        if url_to_check.url not in ip_address:
+            videos = db.session.query(Video).all()
+            for video in videos:
+                video.url = f"http://{ip_address}:5000/{video.title}"
+
     db.session.commit()
     return video
