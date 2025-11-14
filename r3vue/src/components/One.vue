@@ -2,11 +2,16 @@
 import { ref } from "vue"
 import type { Video } from "../types"
 import Requests from "../requests"
-import Controls from './Controls.vue'
-import Modal from './Modal.vue'
+import Controls from "./Controls.vue"
+import Modal from "./Modal.vue"
 
-const props = defineProps<{ ipAddress: string}>()
-const emit = defineEmits(["getRandomVideo", "search", "selectionOption", 'videos'])
+const props = defineProps<{ ipAddress: string }>()
+const emit = defineEmits([
+    "getRandomVideo",
+    "search",
+    "selectionOption",
+    "videos",
+])
 
 const video = defineModel<Video | null>("video")
 
@@ -14,7 +19,7 @@ const currentPlayTime = ref(0)
 const showModal = ref(false)
 
 const videoRef = ref<HTMLVideoElement | null>(null)
-const selectionOption = ref("")
+const selectionOption = ref()
 
 const handleInput = (e: any) => {
     emit("search", e.target.value)
@@ -55,13 +60,13 @@ const onPause = async () => {
         <h2>
             {{ video?.title || "Click the RV button or click a video card." }}
         </h2>
-        <Controls v-model:selectionOption="selectionOption"
-                :emit="emit" 
-                :ipAddress="ipAddress"
-                :handleInput="handleInput" 
-                v-model:showModal="showModal"
-                :video="video"
-                />
+        <Controls
+            v-model:selectionOption="selectionOption"
+            :emit="emit"
+            :ipAddress="ipAddress"
+            :handleInput="handleInput"
+            v-model:showModal="showModal"
+            :video="video" />
     </div>
     <Modal v-model:showModal="showModal" />
 </template>
@@ -71,6 +76,7 @@ video {
     height: 100%;
     margin-left: 30px;
 }
+
 .one {
     margin-left: 30px;
     display: flex;
