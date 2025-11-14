@@ -14,7 +14,7 @@ def create_app():
     app.config["UPLOAD_PATH"] = "/app/data"
     app.config["API_TITLE"] = "r3vids"
     app.config["API_VERSION"] = "v5"
-    app.config["OPENAPI_VERSION"] = "3.0.3"
+    app.config["OPENAPI_VERSION"] = "3.1.1"
     app.config["OPENAPI_URL_PREFIX"] = ""
     app.config["OPENAPI_SWAGGER_UI_PATH"] = "/"
     app.config["OPENAPI_SWAGGER_UI_URL"] = (
