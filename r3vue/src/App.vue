@@ -45,15 +45,21 @@ const handlePickedVideo = async (pv: Video | null) => {
 const handleSearch = (st: any) => {
     search.value = st
 }
+
+const handleResetVideoStatus = async () => {
+    videos.value = await Requests.getVideos(ipAddress)
+}
 </script>
 
 <template>
     <div class="container">
         <One
-            :video="video"
+            @resetVideoStatus="handleResetVideoStatus"
+            v-model:video="video"
             @getRandomVideo="handleRandomVideo"
             @search="handleSearch"
-            :ipAddress="ipAddress" />
+            :ipAddress="ipAddress"
+            v-model:videos="videos" />
 
         <Two
             :ipAddress="ipAddress"

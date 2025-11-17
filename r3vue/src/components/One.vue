@@ -6,14 +6,16 @@ import Controls from "./Controls.vue"
 import Modal from "./Modal.vue"
 
 const props = defineProps<{ ipAddress: string }>()
-const emit = defineEmits([
+const emits = defineEmits([
     "getRandomVideo",
     "search",
     "selectionOption",
     "videos",
+    "resetVideoStatus",
 ])
 
 const video = defineModel<Video | null>("video")
+const videos = defineModel<Video[] | null>("videos")
 
 const currentPlayTime = ref(0)
 const showModal = ref(false)
@@ -22,7 +24,7 @@ const videoRef = ref<HTMLVideoElement | null>(null)
 const selectionOption = ref()
 
 const handleInput = (e: any) => {
-    emit("search", e.target.value)
+    emits("search", e.target.value)
 }
 
 const getTime = () => {
@@ -61,12 +63,14 @@ const onPause = async () => {
             {{ video?.title || "Click the RV button or click a video card." }}
         </h2>
         <Controls
+            @reset-video-status="emits('resetVideoStatus', videos)"
             v-model:selectionOption="selectionOption"
-            :emit="emit"
+            :emit="emits"
             :ipAddress="ipAddress"
             :handleInput="handleInput"
             v-model:showModal="showModal"
-            :video="video" />
+            v-model:video="video"
+            v-model:videos="videos" />
     </div>
     <Modal v-model:showModal="showModal" />
 </template>
