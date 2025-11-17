@@ -2,7 +2,8 @@
 import Requests from "../requests"
 import { type Video } from "../types"
 import VideoCard from "./VideoCard.vue"
-const emit = defineEmits(["getVideo"])
+
+defineEmits(["getVideo"])
 defineProps<{ videos: Video[]; ipAddress: string }>()
 </script>
 <template>
@@ -24,6 +25,7 @@ defineProps<{ videos: Video[]; ipAddress: string }>()
     display: flex;
     justify-content: center;
 }
+
 ul {
     overflow: scroll;
 }
