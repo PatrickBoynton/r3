@@ -22,7 +22,6 @@ defineProps<{ videos: Video[]; ipAddress: string }>()
     overflow: hidden;
     height: 90vh;
     display: flex;
-    display: flex;
     justify-content: center;
 }
 ul {
