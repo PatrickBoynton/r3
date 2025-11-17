@@ -26,7 +26,7 @@ const onRandomVideoSelect = async () => {
         "?" + selectionOption.value || "",
     )
     video.value = randomVideo
-    videos.value = (await Requests.getVideos(props.ipAddress)) as any
+    videos.value = randomVideo
 }
 const onRandomNewVideoSelect = async () => {
     const newRandomVideo: Video = await Requests.getRandomVideo(
@@ -35,7 +35,7 @@ const onRandomNewVideoSelect = async () => {
         "?" + selectionOption.value + "&played=false" || "?played=false",
     )
     video.value = newRandomVideo
-    videos.value = await Requests.getVideos(props.ipAddress)
+    videos.value = newRandomVideo
 }
 </script>
 <template>
