@@ -31,6 +31,7 @@ def get_duration(file_name):
 def create_video():
     path = "/app/data/"
     video = None
+
     for file in os.listdir(path):
         video_status = VideoStatus(
             played=False,
@@ -40,7 +41,7 @@ def create_video():
             is_watch_later=False,
             last_played=None,
         )
-
+        print(f"File: {file}", flush=True)
         video = Video(
             title=os.path.splitext(file)[0],
             url=f"http://{ip_address}:5000/{file}",
@@ -60,7 +61,7 @@ def create_video():
         if url_to_check.url not in ip_address:
             videos = db.session.query(Video).all()
             for video in videos:
-                video.url = f"http://{ip_address}:5000/{video.title}"
+                video.url = f"http://{ip_address}:5000/{video.title}.mp4"
 
     db.session.commit()
     return video
