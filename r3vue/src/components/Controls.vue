@@ -26,7 +26,16 @@ const onRandomVideoSelect = async () => {
         "?" + selectionOption.value || "",
     )
     video.value = randomVideo
-    videos = (await Requests.getVideos(props.ipAddress)) as any
+    videos.value = (await Requests.getVideos(props.ipAddress)) as any
+}
+const onRandomNewVideoSelect = async () => {
+    const newRandomVideo: Video = await Requests.getRandomVideo(
+        props.ipAddress,
+        props.emit,
+        "?" + selectionOption.value + "&played=false" || "?played=false",
+    )
+    video.value = newRandomVideo
+    videos.value = await Requests.getVideos(props.ipAddress)
 }
 </script>
 <template>
@@ -47,16 +56,7 @@ const onRandomVideoSelect = async () => {
             <option value="gte=100">> 100 Minutes</option>
         </select>
         <button @click="onRandomVideoSelect">RV</button>
-        <button
-            @click="
-                Requests.getRandomVideo(
-                    ipAddress,
-                    emit,
-                    '?played=false' + '&' + selectionOption || '',
-                )
-            ">
-            RNV
-        </button>
+        <button @click="onRandomNewVideoSelect">RNV</button>
         <input @input="handleInput" type="text" />
         <button @click="showModal = true">UL</button>
         <button @click="onResetMetaData">DVS</button>
