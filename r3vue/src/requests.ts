@@ -34,8 +34,7 @@ class Requests {
             const response = await fetch(
                 `http://${ipAddress}:5000/video-context`,
             )
-            const vc = await response.json()
-            return vc
+            return await response.json()
         } catch (error) {
             console.error("No context.")
         }
