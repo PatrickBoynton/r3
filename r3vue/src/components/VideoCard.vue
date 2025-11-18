@@ -1,9 +1,10 @@
 <script setup lang="ts">
-import type { Video } from "../types"
 import { convertToPlayTime, formatDate } from "../utils"
+import type { Video } from "../types.ts"
+
 const emit = defineEmits(["getVideo"])
 
-defineProps<{ video: Video; ipAddress: string }>()
+defineProps<{ ipAddress: string; video: Video }>()
 </script>
 <template>
     <li @click="emit('getVideo', video)">
@@ -28,9 +29,11 @@ hr {
     border: 2px solid #ffdb60;
     width: 113%;
 }
+
 h4:first-of-type {
     margin-top: 20px;
 }
+
 span {
     font-weight: bold;
     font-size: 18px;

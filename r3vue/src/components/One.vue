@@ -4,6 +4,7 @@ import type { Video } from "../types"
 import Requests from "../requests"
 import Controls from "./Controls.vue"
 import Modal from "./Modal.vue"
+import { convertToPlayTime } from "../utils.ts"
 
 const props = defineProps<{ ipAddress: string }>()
 const emits = defineEmits([
@@ -62,6 +63,7 @@ const onPause = async () => {
         <h2>
             {{ video?.title || "Click the RV button or click a video card." }}
         </h2>
+        <h2>{{ video?.duration ? convertToPlayTime(video?.duration) : "" }}</h2>
         <Controls
             @reset-video-status="emits('resetVideoStatus', videos)"
             v-model:selectionOption="selectionOption"

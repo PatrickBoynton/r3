@@ -1,17 +1,17 @@
 <script setup lang="ts">
 import Requests from "../requests"
-import { type Video } from "../types"
 import VideoCard from "./VideoCard.vue"
+import type { Video } from "../types.ts"
 
-defineEmits(["getVideo"])
-defineProps<{ videos: Video[]; ipAddress: string }>()
+const emits = defineEmits(["getVideo"])
+defineProps<{ ipAddress: string; videos: Video[] }>()
 </script>
 <template>
     <div class="two">
         <ul>
             <VideoCard
                 :ipAddress="ipAddress"
-                @click="Requests.getVideo(ipAddress, video)"
+                @click="Requests.getVideo(ipAddress, video, emits)"
                 v-for="video in videos"
                 :video="video"
                 :key="video.id" />

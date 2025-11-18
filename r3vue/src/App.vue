@@ -63,7 +63,7 @@ const handleResetVideoStatus = async () => {
 
         <Two
             :ipAddress="ipAddress"
-            :videos="videos"
+            v-model:videos="videos"
             :video="video"
             @getVideo="handlePickedVideo" />
     </div>

@@ -13,10 +13,12 @@ class Requests {
         return videoList
     }
 
-    static async getVideo(ipAddress: string, video: Video) {
+    static async getVideo(ipAddress: string, video: Video, emit?: any) {
         const response = await fetch(
             `http://${ipAddress}:5000/videos/${video.id}`,
         )
+        const sv = await response.json()
+        emit('getVideo', sv)
         return await response.json()
     }
 
