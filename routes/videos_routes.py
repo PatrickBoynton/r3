@@ -1,13 +1,15 @@
+from datetime import datetime
+
+from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint
+from sqlalchemy import desc
+from sqlalchemy.sql.expression import func
+
 from db import db
 from models import Video, VideoContext, VideoStatus
-from schemas import VideoSchema, RandomVideoQueryArgs
-from sqlalchemy.sql.expression import func
 from models.create_video import create_video
-from flask import request
-from datetime import datetime
-from sqlalchemy import desc
+from schemas import VideoSchema, RandomVideoQueryArgs
 
 blueprint = Blueprint("videos", __name__, description="Operations on videos")
 
@@ -17,11 +19,17 @@ blueprint = Blueprint("videos", __name__, description="Operations on videos")
 class VideoList(MethodView):
     @blueprint.response(200, VideoSchema(many=True))
     def get(self):
-        return (
-            Video.query.join(VideoStatus)
-            .order_by(desc(VideoStatus.last_played).nulls_last())
-            .all()
-        )
+        played_videos = Video.query.join(VideoStatus).filter_by(played=True).all()
+        videos = Video.query.order_by(Video.title).all()
+
+        if played_videos:
+            return (
+                Video.query.join(VideoStatus)
+                .order_by(desc(VideoStatus.last_played).nulls_last())
+                .all()
+            )
+        else:
+            return videos
 
     @blueprint.response(204)
     def put(self):
@@ -134,7 +142,7 @@ class VideoRandom(MethodView):
                     Video.query.join(VideoStatus)
                     .filter(
                         VideoStatus.played == False,
-                        Video.duration <= int(filter_args["gte"]) * 60,
+                        Video.duration >= int(filter_args["gte"]) * 60,
                     )
                     .order_by(func.random())
                     .first()
