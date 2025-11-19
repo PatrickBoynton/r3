@@ -50,6 +50,7 @@ const onPause = async () => {
         await Requests.updateVideo(props.ipAddress, video.value)
     }
 }
+
 </script>
 <template>
     <div class="one">
@@ -60,10 +61,19 @@ const onPause = async () => {
             @pause="onPause"
             @timeupdate="getTime"
             @loadedmetadata="onMetadataLoaded" />
-        <h2>
-            {{ video?.title || "Click the RV button or click a video card." }}
-        </h2>
-        <h2>{{ video?.duration ? convertToPlayTime(video?.duration) : "" }}</h2>
+        <div class="name">
+            <h2>
+                {{currentPlayTime ? convertToPlayTime(video?.duration - currentPlayTime) : "" }}
+            </h2>
+            <h2>
+                {{
+                    video?.title || "Click the RV button or click a video card."
+                }}
+            </h2>
+            <h2>
+                {{ video?.duration ? convertToPlayTime(video?.duration) : "" }}
+            </h2>
+        </div>
         <Controls
             @reset-video-status="emits('resetVideoStatus', videos)"
             v-model:selectionOption="selectionOption"
@@ -89,5 +99,11 @@ video {
     flex-direction: column;
     justify-content: center;
     align-items: center;
+}
+.name {
+  display: flex;
+}
+.name h2 {
+  margin: 10px;
 }
 </style>
