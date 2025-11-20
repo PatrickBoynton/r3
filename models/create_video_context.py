@@ -12,6 +12,7 @@ def create_video_context():
         num_videos = sum(len(files) for _, _, files in os.walk(path))
         video_context = VideoContext(
                 current_video=None,
+                previous_video=None,
                 total_videos=num_videos
         )
         db.session.add(video_context)
