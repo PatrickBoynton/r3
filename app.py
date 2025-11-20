@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_smorest import Api
 
 from db import db
+from models import VideoContext
 from models.create_video_context import create_video_context
 
 
@@ -43,9 +44,13 @@ def create_app():
 
         if not db.session.query(Video).first():
             create_video()
+        else:
+            print("Videos in the database.", flush=True)
+
+        if not db.session.query(VideoContext).first():
             create_video_context()
         else:
-            print("Videos in the database!", flush=True)
+            print('Video context exists.', flush=True)
 
     api.register_blueprint(VideosRoutes)
     api.register_blueprint(VideoContextRoutes)
