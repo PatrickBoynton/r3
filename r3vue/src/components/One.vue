@@ -55,11 +55,11 @@ const onPause = async () => {
             @timeupdate="getTime"
             @loadedmetadata="onMetadataLoaded" />
         <div class="name">
-            <h2>{{ videoContext?.total_videos  || 'NOTHING. '}}</h2>
+            <h2>{{ videoContext?.total_videos + ' videos' || 'NOTHING. '}}</h2>
             <h2>
                 {{
                     currentPlayTime
-                        ? convertToPlayTime(video?.duration - currentPlayTime)
+                        ? convertToPlayTime(video?.duration as number - currentPlayTime)
                         : ""
                 }}
             </h2>
