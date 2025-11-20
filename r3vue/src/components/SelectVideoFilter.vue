@@ -4,6 +4,7 @@ const selectionOption = defineModel('selectionOption')
 
 <template>
  <select v-model="selectionOption" name="" id="">
+            <option value="" selected>No Filter.</option>
             <option value="lte=10">< 10 Minutes</option>
             <option value="lte=20">< 20 Minutes</option>
             <option value="lte=30">< 30 Minutes</option>
