@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Requests from "../requests"
 import { type Video } from "../types"
+import SelectVideoFilter from "./SelectVideoFilter.vue";
 
 const props = defineProps<{
     ipAddress: string
@@ -37,21 +38,7 @@ const onRandomNewVideoSelect = async () => {
 </script>
 <template>
     <div class="controls">
-        <select v-model="selectionOption" name="" id="">
-            <option value="lte=10">< 10 Minutes</option>
-            <option value="lte=20">< 20 Minutes</option>
-            <option value="lte=30">< 30 Minutes</option>
-            <option value="lte=40">< 40 Minutes</option>
-            <option value="lte=50">< 50 Minutes</option>
-            <option value="lte=60">< 60 Minutes</option>
-            <option value="gte=10">> 10 Minutes</option>
-            <option value="gte=20">> 20 Minutes</option>
-            <option value="gte=30">> 30 Minutes</option>
-            <option value="gte=40">> 40 Minutes</option>
-            <option value="gte=50">> 50 Minutes</option>
-            <option value="gte=60">> 60 Minutes</option>
-            <option value="gte=100">> 100 Minutes</option>
-        </select>
+      <SelectVideoFilter v-model:selection-option="selectionOption" />
         <button @click="onRandomVideoSelect">RV</button>
         <button @click="onRandomNewVideoSelect">RNV</button>
         <input @input="handleInput" type="text" />
