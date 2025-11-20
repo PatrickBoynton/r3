@@ -17,3 +17,9 @@ type VideoStatus = {
     is_watch_later: boolean
     last_played: Date | null
 }
+
+export type VideoContext = {
+    id: string
+    current_video: Video
+    total_videos: number
+}
