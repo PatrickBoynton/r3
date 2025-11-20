@@ -57,11 +57,11 @@ class SingleVideo(MethodView):
     def get(self, video_id):
         video = Video.query.get_or_404(video_id)
         video_context = VideoContext.query.first()
+        video_context.video_plays += 1
         print(f"video selected: {video.title}")
-        if video_context:
+
+        if not video_context.current_video:
             video_context.current_video = video.id
-        else:
-            video_context.current_video = VideoContext(current_video=video.id)
             db.session.add(video_context)
 
         video.video_status.selection_count += 1
@@ -167,13 +167,9 @@ class VideoRandom(MethodView):
 
         print(f"random video selected: {random_video.title}", flush=True)
         video_context = VideoContext.query.first()
-
-        if video_context:
+        video_context.video_plays += 1
+        if not video_context.current_video:
             video_context.current_video = random_video.id
-            db.session.commit()
-        else:
-            print("No video context.")
-            video_context = VideoContext(current_video=random_video.id)
             db.session.add(video_context)
 
         db.session.commit()
