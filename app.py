@@ -3,6 +3,7 @@ from flask_cors import CORS
 from flask_smorest import Api
 
 from db import db
+from models.create_video_context import create_video_context
 
 
 # http://172.17.0.156:5000/AA1.mp4
@@ -42,6 +43,7 @@ def create_app():
 
         if not db.session.query(Video).first():
             create_video()
+            create_video_context()
         else:
             print("Videos in the database!", flush=True)
 

@@ -1,5 +1,6 @@
-from db import db
 from uuid import uuid4
+
+from db import db
 
 
 class VideoContext(db.Model):
@@ -10,3 +11,4 @@ class VideoContext(db.Model):
     current_video = db.Column(
         db.UUID(as_uuid=True), db.ForeignKey("videos.id"), unique=True, nullable=True
     )
+    total_videos = db.Column(db.Integer, default=0)
