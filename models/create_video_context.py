@@ -13,7 +13,8 @@ def create_video_context():
         video_context = VideoContext(
                 current_video=None,
                 previous_video=None,
-                total_videos=num_videos
+                total_videos=num_videos,
+                video_plays=0
         )
         db.session.add(video_context)
         db.session.commit()

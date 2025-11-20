@@ -24,7 +24,9 @@ class VideoSchema(Schema):
 class VideoContextSchema(Schema):
     id = fields.Str(dump_only=True)
     current_video = fields.Str(allow_none=True)
+    previous_video = fields.Str(allow_none=True)
     total_videos = fields.Integer()
+    video_plays = fields.Integer()
 
 class RandomVideoQueryArgs(Schema):
     played = fields.Boolean(required=False)
