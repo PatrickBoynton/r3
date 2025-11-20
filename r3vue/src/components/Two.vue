@@ -2,16 +2,22 @@
 import Requests from "../requests"
 import VideoCard from "./VideoCard.vue"
 
-const emits = defineEmits(["getVideo"])
-defineProps<{ ipAddress: string }>()
-const videos = defineModel('videos')
+const props = defineProps<{ ipAddress: string }>()
+const videos = defineModel("videos")
+const video = defineModel('video')
+
+const handlePickedVideo = async (vid: any) => {
+    video.value = await Requests.getVideo(props.ipAddress, vid)
+    videos.value = await Requests.getVideos(props.ipAddress)
+}
+
 </script>
 <template>
     <div class="two">
         <ul>
             <VideoCard
                 :ipAddress="ipAddress"
-                @click="Requests.getVideo(ipAddress, video, emits)"
+                @click="handlePickedVideo(video)"
                 v-for="video in videos"
                 :video="video"
                 :key="video.id" />

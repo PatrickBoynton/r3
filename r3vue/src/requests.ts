@@ -2,24 +2,16 @@ import type { Video } from "./types"
 
 class Requests {
     static async getVideos(ipAddress: string) {
-        const videoList: Video[] = []
         const response = await fetch(`http://${ipAddress}:5000/videos`)
-        const vids = await response.json()
 
-        vids.forEach((video: Video) => {
-            videoList.push(video)
-        })
-
-        return videoList
+        return  await response.json()
     }
 
-    static async getVideo(ipAddress: string, video: Video, emit?: any) {
+    static async getVideo(ipAddress: string, video: Video) {
         const response = await fetch(
             `http://${ipAddress}:5000/videos/${video.id}`,
         )
-        const sv = await response.json()
-        emit("getVideo", sv)
-        return sv
+        return await response.json()
     }
 
     static async getRandomVideo(ipAddress: string, query?: string) {
