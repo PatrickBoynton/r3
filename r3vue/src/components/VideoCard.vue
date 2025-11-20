@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { convertToPlayTime, formatDate } from "../utils"
-import type { Video } from "../types.ts"
 
-const emit = defineEmits(["getVideo"])
-
-defineProps<{ ipAddress: string; video: Video }>()
+defineProps<{ ipAddress: string }>()
+const video = defineModel('video')
 </script>
 <template>
-    <li @click="emit('getVideo', video)">
+    <li>
         <h1>{{ video.title }}</h1>
         <hr />
         <h4>{{ "video length - " + convertToPlayTime(video.duration) }}</h4>

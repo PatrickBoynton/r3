@@ -18,17 +18,16 @@ class Requests {
             `http://${ipAddress}:5000/videos/${video.id}`,
         )
         const sv = await response.json()
-        emit('getVideo', sv)
-        return await response.json()
+        emit("getVideo", sv)
+        return sv
     }
 
-    static async getRandomVideo(ipAddress: string, emit: any, query?: string) {
+    static async getRandomVideo(ipAddress: string, query?: string) {
         const response = await fetch(
             `http://${ipAddress}:5000/videos/random${query}`,
         )
-        const rv = await response.json()
-        emit("getRandomVideo", rv)
-        return rv
+
+        return await response.json()
     }
 
     static async getVideoContext(ipAddress: string) {

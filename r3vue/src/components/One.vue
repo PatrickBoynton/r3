@@ -7,25 +7,24 @@ import Modal from "./Modal.vue"
 import { convertToPlayTime } from "../utils.ts"
 
 const props = defineProps<{ ipAddress: string }>()
-const emits = defineEmits([
-    "getRandomVideo",
-    "search",
-    "selectionOption",
-    "videos",
-    "resetVideoStatus",
-])
+// const emits = defineEmits([
+//     "selectionOption",
+//     "videos",
+//     "resetVideoStatus",
+// ])
 
 const video = defineModel<Video | null>("video")
 const videos = defineModel<Video[] | null>("videos")
+const search = defineModel("search")
+const selectionOption = defineModel('selectionOption')
 
 const currentPlayTime = ref(0)
 const showModal = ref(false)
 
 const videoRef = ref<HTMLVideoElement | null>(null)
-const selectionOption = ref()
 
 const handleInput = (e: any) => {
-    emits("search", e.target.value)
+    search.value = e.target.value
 }
 
 const getTime = () => {
@@ -50,7 +49,6 @@ const onPause = async () => {
         await Requests.updateVideo(props.ipAddress, video.value)
     }
 }
-
 </script>
 <template>
     <div class="one">
@@ -63,7 +61,11 @@ const onPause = async () => {
             @loadedmetadata="onMetadataLoaded" />
         <div class="name">
             <h2>
-                {{currentPlayTime ? convertToPlayTime(video?.duration - currentPlayTime) : "" }}
+                {{
+                    currentPlayTime
+                        ? convertToPlayTime(video?.duration - currentPlayTime)
+                        : ""
+                }}
             </h2>
             <h2>
                 {{
@@ -75,9 +77,7 @@ const onPause = async () => {
             </h2>
         </div>
         <Controls
-            @reset-video-status="emits('resetVideoStatus', videos)"
             v-model:selectionOption="selectionOption"
-            :emit="emits"
             :ipAddress="ipAddress"
             :handleInput="handleInput"
             v-model:showModal="showModal"
@@ -100,10 +100,12 @@ video {
     justify-content: center;
     align-items: center;
 }
+
 .name {
-  display: flex;
+    display: flex;
 }
+
 .name h2 {
-  margin: 10px;
+    margin: 10px;
 }
 </style>

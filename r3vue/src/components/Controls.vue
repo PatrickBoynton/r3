@@ -4,36 +4,35 @@ import { type Video } from "../types"
 
 const props = defineProps<{
     ipAddress: string
-    emit: any
     handleInput: (e: any) => void
 }>()
-const emits = defineEmits(["resetVideoStatus"])
 const selectionOption = defineModel("selectionOption")
 const showModal = defineModel("showModal")
 const video = defineModel("video")
-let videos = defineModel("videos")
+const videos = defineModel("videos")
+
 
 const onResetMetaData = async () => {
     await Requests.deleteVideoStatus(props.ipAddress)
     video.value = null
-    emits("resetVideoStatus", videos)
+    videos.value = await Requests.getVideos(props.ipAddress)
 }
 
 const onRandomVideoSelect = async () => {
     const randomVideo: Video = await Requests.getRandomVideo(
         props.ipAddress,
-        props.emit,
         "?" + selectionOption.value || "",
     )
     video.value = randomVideo
+  videos.value = await Requests.getVideos(props.ipAddress)
 }
 const onRandomNewVideoSelect = async () => {
     const newRandomVideo: Video = await Requests.getRandomVideo(
         props.ipAddress,
-        props.emit,
         "?" + selectionOption.value + "&played=false" || "?played=false",
     )
     video.value = newRandomVideo
+    videos.value = await Requests.getVideos(props.ipAddress)
 }
 </script>
 <template>

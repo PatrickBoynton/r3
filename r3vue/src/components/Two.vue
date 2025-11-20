@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import Requests from "../requests"
 import VideoCard from "./VideoCard.vue"
-import type { Video } from "../types.ts"
 
 const emits = defineEmits(["getVideo"])
-defineProps<{ ipAddress: string; videos: Video[] }>()
+defineProps<{ ipAddress: string }>()
+const videos = defineModel('videos')
 </script>
 <template>
     <div class="two">

@@ -30,42 +30,20 @@ watch(search, () => {
         video.title.toLowerCase().includes(search.value.toLowerCase()),
     )
 })
-
-// Emitters
-const handleRandomVideo = async (rv: Video) => {
-    video.value = rv
-    videos.value = await Requests.getVideos(ipAddress)
-}
-
-const handlePickedVideo = async (pv: Video | null) => {
-    video.value = pv
-    videos.value = await Requests.getVideos(ipAddress)
-}
-
-const handleSearch = (st: any) => {
-    search.value = st
-}
-
-const handleResetVideoStatus = async () => {
-    videos.value = await Requests.getVideos(ipAddress)
-}
 </script>
 
 <template>
     <div class="container">
         <One
-            @resetVideoStatus="handleResetVideoStatus"
+            v-model:search="search"
             v-model:video="video"
-            @getRandomVideo="handleRandomVideo"
-            @search="handleSearch"
             :ipAddress="ipAddress"
             v-model:videos="videos" />
 
         <Two
             :ipAddress="ipAddress"
             v-model:videos="videos"
-            :video="video"
-            @getVideo="handlePickedVideo" />
+            v-model:video="video" />
     </div>
 </template>
 
