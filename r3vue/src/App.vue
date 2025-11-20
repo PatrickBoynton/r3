@@ -3,13 +3,14 @@ import { onMounted, ref, watch } from "vue"
 import One from "./components/One.vue"
 import Two from "./components/Two.vue"
 import Requests from "./requests"
-import { type Video } from "./types"
+import {type Video, type VideoContext} from "./types"
 
 const ipAddress = import.meta.env.VITE_IP_ADDRESS
 // Two lists are necessary for the search function to work.
 const videos = ref<Video[]>([])
 const videoSearchList = ref<Video[]>([])
 const video = ref<Video | null>(null)
+const videoContext = ref<VideoContext | null>(null)
 
 const search = ref("")
 
@@ -21,7 +22,8 @@ onMounted(async () => {
     videoSearchList.value = vids
 
     if (context) {
-        video.value = context
+        videoContext.value = context
+        video.value = context.current_video
     }
 })
 
@@ -36,6 +38,7 @@ watch(search, () => {
     <div class="container">
         <One
             v-model:search="search"
+            :video-context="videoContext"
             v-model:video="video"
             :ipAddress="ipAddress"
             v-model:videos="videos" />

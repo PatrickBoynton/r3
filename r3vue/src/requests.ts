@@ -1,20 +1,23 @@
-import type { Video } from "./types"
+import type { Video, VideoContext } from "./types"
 
 class Requests {
-    static async getVideos(ipAddress: string) {
+    static async getVideos(ipAddress: string): Promise<Video[]> {
         const response = await fetch(`http://${ipAddress}:5000/videos`)
 
-        return  await response.json()
+        return await response.json()
     }
 
-    static async getVideo(ipAddress: string, video: Video) {
+    static async getVideo(ipAddress: string, video: Video): Promise<Video> {
         const response = await fetch(
             `http://${ipAddress}:5000/videos/${video.id}`,
         )
         return await response.json()
     }
 
-    static async getRandomVideo(ipAddress: string, query?: string) {
+    static async getRandomVideo(
+        ipAddress: string,
+        query?: string,
+    ): Promise<Video> {
         const response = await fetch(
             `http://${ipAddress}:5000/videos/random${query}`,
         )
@@ -22,7 +25,9 @@ class Requests {
         return await response.json()
     }
 
-    static async getVideoContext(ipAddress: string) {
+    static async getVideoContext(
+        ipAddress: string,
+    ): Promise<VideoContext | undefined> {
         try {
             const response = await fetch(
                 `http://${ipAddress}:5000/video-context`,

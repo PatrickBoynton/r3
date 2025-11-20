@@ -34,7 +34,7 @@ class VideoList(MethodView):
     @blueprint.response(204)
     def put(self):
         videos = Video.query.all()
-        video_context = VideoContext.query.all()
+        video_context = VideoContext.query.first()
         for video in videos:
             video.video_status.played = False
             video.video_status.current_play_time = 0
@@ -43,8 +43,7 @@ class VideoList(MethodView):
             video.video_status.is_watch_later = False
             video.video_status.last_played = None
 
-        for context in video_context:
-            context.current_video = None
+            video_context.current_video = None
 
         db.session.commit()
         print(f"Video status reset.")
