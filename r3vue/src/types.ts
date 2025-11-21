@@ -22,4 +22,5 @@ export type VideoContext = {
     id: string
     current_video: Video
     total_videos: number
+    video_plays: number
 }
