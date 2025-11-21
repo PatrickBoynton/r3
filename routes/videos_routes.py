@@ -44,6 +44,8 @@ class VideoList(MethodView):
             video.video_status.last_played = None
 
             video_context.current_video = None
+            video_context.previous_video = None
+            video_context.video_plays = 0
 
         db.session.commit()
         print(f"Video status reset.")
@@ -60,9 +62,9 @@ class SingleVideo(MethodView):
         video_context.video_plays += 1
         print(f"video selected: {video.title}")
 
-        if not video_context.current_video:
-            video_context.current_video = video.id
-            db.session.add(video_context)
+
+        video_context.current_video = video.id
+        db.session.add(video_context)
 
         video.video_status.selection_count += 1
         video.video_status.played = True
@@ -168,9 +170,8 @@ class VideoRandom(MethodView):
         print(f"random video selected: {random_video.title}", flush=True)
         video_context = VideoContext.query.first()
         video_context.video_plays += 1
-        if not video_context.current_video:
-            video_context.current_video = random_video.id
-            db.session.add(video_context)
+        video_context.current_video = random_video.id
+        db.session.add(video_context)
 
         db.session.commit()
         return random_video
