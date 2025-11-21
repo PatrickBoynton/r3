@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {  ref } from "vue"
+import {ref} from "vue"
 import type {Video, VideoContext} from "../types"
 import Requests from "../requests"
 import Controls from "./Controls.vue"
@@ -56,6 +56,7 @@ const onPause = async () => {
             @loadedmetadata="onMetadataLoaded" />
         <div class="name">
             <h2>{{ videoContext?.total_videos + ' videos' || 'NOTHING. '}}</h2>
+            <h2>{{videoContext?.video_plays + ' played videos' || 0}}</h2>
             <h2>
                 {{
                     currentPlayTime
