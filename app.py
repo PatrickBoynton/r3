@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_smorest import Api
-
+from models.update_video import update_video
 from db import db
 from models import VideoContext
 from models.create_video_context import create_video_context
@@ -46,6 +46,7 @@ def create_app():
             create_video()
         else:
             print("Videos in the database.", flush=True)
+            update_video()
 
         if not db.session.query(VideoContext).first():
             create_video_context()

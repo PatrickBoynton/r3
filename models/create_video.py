@@ -29,6 +29,7 @@ def get_duration(file_name):
 
 
 def create_video():
+    video_to_check = db.session.query(Video).first()
     path = "/app/data/"
     video = None
 
@@ -50,18 +51,11 @@ def create_video():
             uploaded_date=datetime.datetime.now(),
             video_status=video_status,
         )
-        video_to_check = db.session.query(Video).filter_by(title=video.title).first()
+        
         if not video_to_check:
             db.session.add(video)
         else:
             continue
-
-    if db.session.query(Video).first():
-        url_to_check = db.session.query(Video).filter_by(url=video.url).first()
-        if url_to_check.url not in ip_address:
-            videos = db.session.query(Video).all()
-            for video in videos:
-                video.url = f"http://{ip_address}:5001/{video.title}.mp4"
 
     db.session.commit()
     return video

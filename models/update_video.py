@@ -1,13 +1,22 @@
-from sqlalchemy import update
 from models.video import Video
 from db import db
+import os
+
+ip_address = os.getenv("IP_ADDRESS")
 
 
-def update_video(video):
-    print("UPDATE VIDEO", flush=True)
-    print(f"Video: {video}")
-    # if video in db.session.dirty:
-    #     db.session.commit()
-    #     print('Successful change!', flush=True)
-    # else:
-    #     print('No changes detected.', flush=True)
+def update_video():
+    video_to_check = db.session.query(Video).first()
+    if video_to_check.url not in ip_address:
+        print('IP ADDRESS DIFFERENT!')
+        print(f'IP ADDRESS: {ip_address}')
+        videos = db.session.query(Video).all()
+        for video in videos:
+            video.url = f"http://{ip_address}:5001/{video.title}.mp4"
+            db.session.add(video)
+            db.session.commit()
+    else:
+        print('IP ADDRESS THE SAME.')
+        print(f'ip address: {ip_address}')
+
+        
