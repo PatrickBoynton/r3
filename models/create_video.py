@@ -44,7 +44,7 @@ def create_video():
         print(f"File: {file}", flush=True)
         video = Video(
             title=os.path.splitext(file)[0],
-            url=f"http://{ip_address}:5000/{file}",
+            url=f"http://{ip_address}:5001/{file}",
             image=None,
             duration=get_duration(path + file),
             uploaded_date=datetime.datetime.now(),
@@ -61,7 +61,7 @@ def create_video():
         if url_to_check.url not in ip_address:
             videos = db.session.query(Video).all()
             for video in videos:
-                video.url = f"http://{ip_address}:5000/{video.title}.mp4"
+                video.url = f"http://{ip_address}:5001/{video.title}.mp4"
 
     db.session.commit()
     return video
