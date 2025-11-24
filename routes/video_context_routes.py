@@ -17,6 +17,7 @@ class VideoContextList(MethodView):
         previous_video = None
         total_videos = video_context.total_videos
         video_plays = video_context.video_plays
+        current_os = video_context.current_os
 
         if video_context.current_video:
             cvo = Video.query.get_or_404(video_context.current_video)
@@ -29,6 +30,7 @@ class VideoContextList(MethodView):
             "current_video": current_video,
             'previous_video': previous_video,
             "total_videos": total_videos,
-            "video_plays": video_plays
+            "video_plays": video_plays,
+            "current_os": current_os
         }
         return context

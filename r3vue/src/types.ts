@@ -23,4 +23,5 @@ export type VideoContext = {
     current_video: Video
     total_videos: number
     video_plays: number
+    current_os: string
 }

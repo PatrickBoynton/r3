@@ -24,17 +24,23 @@ try:
 except:
     ip_address = 'localhost'
 
+
 if "192" in ip_address:
     print(f"hostname: {hostname}")
     print(f"ip_address: {ip_address}")
     if "Mac" in hostname:
         with open(r3vids_mac, "w") as file, open(r3vue_mac, "w") as file2:
-            file.write(f"IP_ADDRESS={ip_address}")
+            file.write(f"IP_ADDRESS={ip_address}\n")
             file2.write(f"VITE_IP_ADDRESS={ip_address}")
+        with open(r3vids_mac, "a") as f:
+            f.write(f"CURRENT_OS={hostname}")
     else:
         with open(r3vids, "w") as file, open(r3vue, "w") as file2:
-            file.write(f"IP_ADDRESS={ip_address}")
+            file.write(f"IP_ADDRESS={ip_address}\n")
             file2.write(f"VITE_IP_ADDRESS={ip_address}")
+
+            with open(r3vids, "a") as f:
+                f.write(f"CURRENT_OS={hostname}\n")
 
 else:
     print("localhost")

@@ -27,6 +27,7 @@ class VideoContextSchema(Schema):
     previous_video = fields.Str(allow_none=True)
     total_videos = fields.Integer()
     video_plays = fields.Integer()
+    current_os = fields.Str()
 
 class RandomVideoQueryArgs(Schema):
     played = fields.Boolean(required=False)
