@@ -8,7 +8,6 @@ ip_address = os.getenv("IP_ADDRESS")
 def update_video():
     video_to_check = db.session.query(Video).first()
     if video_to_check.url not in ip_address:
-        print('IP ADDRESS DIFFERENT!')
         print(f'IP ADDRESS: {ip_address}')
         videos = db.session.query(Video).all()
         for video in videos:
@@ -16,7 +15,6 @@ def update_video():
             db.session.add(video)
             db.session.commit()
     else:
-        print('IP ADDRESS THE SAME.')
         print(f'ip address: {ip_address}')
 
         
