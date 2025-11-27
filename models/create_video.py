@@ -51,7 +51,7 @@ def create_video():
             uploaded_date=datetime.datetime.now(),
             video_status=video_status,
         )
-        
+
         if not video_to_check:
             db.session.add(video)
         else:

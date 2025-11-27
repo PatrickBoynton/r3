@@ -12,6 +12,7 @@ data_folder_mac = "/Users/patrick/r3/data"
 hostname = socket.gethostname()
 # ip_address = socket.gethostbyname(hostname)
 
+
 def get_ip_address():
     s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
     s.connect(("8.8.8.8", 80))
@@ -19,10 +20,12 @@ def get_ip_address():
     s.close()
 
     return ip
+
+
 try:
     ip_address = get_ip_address()
 except:
-    ip_address = 'localhost'
+    ip_address = "localhost"
 
 
 if "192" in ip_address:

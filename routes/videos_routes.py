@@ -62,7 +62,6 @@ class SingleVideo(MethodView):
         video_context.video_plays += 1
         print(f"video selected: {video.title}")
 
-
         video_context.current_video = video.id
         db.session.add(video_context)
 

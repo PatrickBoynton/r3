@@ -28,9 +28,9 @@ class VideoContextList(MethodView):
         context = {
             "id": id,
             "current_video": current_video,
-            'previous_video': previous_video,
+            "previous_video": previous_video,
             "total_videos": total_videos,
             "video_plays": video_plays,
-            "current_os": current_os
+            "current_os": current_os,
         }
         return context

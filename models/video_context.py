@@ -11,7 +11,9 @@ class VideoContext(db.Model):
     current_video = db.Column(
         db.UUID(as_uuid=True), db.ForeignKey("videos.id"), unique=True, nullable=True
     )
-    previous_video = db.Column(db.UUID(as_uuid=True), db.ForeignKey('videos.id'), unique=True, nullable=True)
+    previous_video = db.Column(
+        db.UUID(as_uuid=True), db.ForeignKey("videos.id"), unique=True, nullable=True
+    )
     total_videos = db.Column(db.Integer, default=0)
     video_plays = db.Column(db.Integer, default=0)
     current_os = db.Column(db.String())

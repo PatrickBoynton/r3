@@ -29,6 +29,7 @@ class VideoContextSchema(Schema):
     video_plays = fields.Integer()
     current_os = fields.Str()
 
+
 class RandomVideoQueryArgs(Schema):
     played = fields.Boolean(required=False)
     lte = fields.Integer(required=False)

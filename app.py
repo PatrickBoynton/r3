@@ -51,7 +51,7 @@ def create_app():
         if not db.session.query(VideoContext).first():
             create_video_context()
         else:
-            print('Video context exists.', flush=True)
+            print("Video context exists.", flush=True)
 
     api.register_blueprint(VideosRoutes)
     api.register_blueprint(VideoContextRoutes)
