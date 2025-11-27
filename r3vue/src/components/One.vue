@@ -1,12 +1,15 @@
 <script lang="ts" setup>
-import {ref} from "vue"
-import type {Video, VideoContext} from "../types"
+import { ref } from "vue"
+import type { Video, VideoContext } from "../types"
 import Requests from "../requests"
 import Controls from "./Controls.vue"
 import Modal from "./Modal.vue"
 import { convertToPlayTime } from "../utils.ts"
 
-const props = defineProps<{ ipAddress: string, videoContext: VideoContext | null }>()
+const props = defineProps<{
+    ipAddress: string
+    videoContext: VideoContext | null
+}>()
 
 const video = defineModel<Video | null>("video")
 const videos = defineModel<Video[] | null>("videos")
@@ -34,7 +37,8 @@ const getTime = () => {
 
 const onMetadataLoaded = () => {
     if (videoRef.value) {
-        videoRef.value.currentTime = video.value?.video_status.current_play_time as number
+        videoRef.value.currentTime = video.value?.video_status
+            .current_play_time as number
     }
 }
 
@@ -43,7 +47,6 @@ const onPause = async () => {
         await Requests.updateVideo(props.ipAddress, video.value)
     }
 }
-
 </script>
 <template>
     <div class="one">
@@ -55,12 +58,12 @@ const onPause = async () => {
             @timeupdate="getTime"
             @loadedmetadata="onMetadataLoaded" />
         <div class="name">
-            <h2>{{ videoContext?.total_videos + ' videos' || 'NOTHING. '}}</h2>
-            <h2>{{videoContext?.video_plays + ' played videos' || 0}}</h2>
             <h2>
                 {{
                     currentPlayTime
-                        ? convertToPlayTime(video?.duration as number - currentPlayTime)
+                        ? convertToPlayTime(
+                              (video?.duration as number) - currentPlayTime,
+                          )
                         : ""
                 }}
             </h2>
