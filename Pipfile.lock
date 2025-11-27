@@ -5,7 +5,7 @@
         },
         "pipfile-spec": 6,
         "requires": {
-            "python_version": "3.13"
+            "python_version": "3.14"
         },
         "sources": [
             {
@@ -17,9 +17,7 @@
     },
     "default": {
         "apispec": {
-            "extras": [
-                "marshmallow"
-            ],
+            "extras": ["marshmallow"],
             "hashes": [
                 "sha256:18d6cfaf6a9742d4f9a8f364bfabb7e8884983e10b155ad13616e084f47164ef",
                 "sha256:fd0ed14af71a2949d9aeb96b72ce1517cb4a48a5c55667cd0483b7ed33156a2a"
