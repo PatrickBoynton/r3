@@ -3,7 +3,7 @@ import { onMounted, ref, watch } from "vue"
 import One from "./components/One.vue"
 import Two from "./components/Two.vue"
 import Requests from "./requests"
-import {type Video, type VideoContext} from "./types"
+import { type Video, type VideoContext } from "./types"
 
 const ipAddress = import.meta.env.VITE_IP_ADDRESS
 // Two lists are necessary for the search function to work.

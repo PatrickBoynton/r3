@@ -2,7 +2,7 @@
 import { convertToPlayTime, formatDate } from "../utils"
 
 defineProps<{ ipAddress: string }>()
-const video = defineModel('video')
+const video = defineModel("video")
 </script>
 <template>
     <li>

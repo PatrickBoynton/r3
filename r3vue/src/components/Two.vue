@@ -4,13 +4,12 @@ import VideoCard from "./VideoCard.vue"
 
 const props = defineProps<{ ipAddress: string }>()
 const videos = defineModel("videos")
-const video = defineModel('video')
+const video = defineModel("video")
 
 const handlePickedVideo = async (vid: any) => {
     video.value = await Requests.getVideo(props.ipAddress, vid)
     videos.value = await Requests.getVideos(props.ipAddress)
 }
-
 </script>
 <template>
     <div class="two">

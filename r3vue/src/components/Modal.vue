@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const showModal = defineModel('showModal')
-
+const showModal = defineModel("showModal")
 </script>
 <template>
     <div class="modal" v-if="showModal">
