@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Requests from "../requests"
-import { VideoContext, type Video } from "../types"
+import { type Video } from "../types"
 import OverviewModal from "./OverviewModal.vue"
 import SelectVideoFilter from "./SelectVideoFilter.vue"
 import { ref } from "vue"
@@ -8,13 +8,13 @@ import { ref } from "vue"
 const props = defineProps<{
     ipAddress: string
     handleInput: (e: any) => void
-    videoContext: VideoContext
 }>()
 const selectionOption = defineModel("selectionOption")
 const showModal = defineModel("showModal")
 const video = defineModel("video")
 const videos = defineModel("videos")
 const showOverview = ref(false)
+
 const onResetMetaData = async () => {
     await Requests.deleteVideoStatus(props.ipAddress)
     video.value = null
@@ -29,6 +29,7 @@ const onRandomVideoSelect = async () => {
     video.value = randomVideo
     videos.value = await Requests.getVideos(props.ipAddress)
 }
+
 const onRandomNewVideoSelect = async () => {
     const newRandomVideo: Video = await Requests.getRandomVideo(
         props.ipAddress,
