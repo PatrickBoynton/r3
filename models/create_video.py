@@ -29,7 +29,6 @@ def get_duration(file_name):
 
 
 def create_video():
-    video_to_check = db.session.query(Video).first()
     path = "/app/data/"
     video = None
 
@@ -42,7 +41,7 @@ def create_video():
             is_watch_later=False,
             last_played=None,
         )
-        print(f"File: {file}", flush=True)
+        
         video = Video(
             title=os.path.splitext(file)[0],
             url=f"http://{ip_address}:5001/{file}",
@@ -51,11 +50,13 @@ def create_video():
             uploaded_date=datetime.datetime.now(),
             video_status=video_status,
         )
-
-        if not video_to_check:
+        
+        if not db.session.query(Video).filter(Video.title == video.title).first():
+            print(f"File: {file}", flush=True)
             db.session.add(video)
         else:
-            continue
+            print("No videos to add.", flush=True)
+            break
 
     db.session.commit()
     return video

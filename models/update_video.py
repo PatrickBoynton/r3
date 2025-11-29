@@ -14,5 +14,6 @@ def update_video():
             video.url = f"http://{ip_address}:5001/{video.title}.mp4"
             db.session.add(video)
             db.session.commit()
+        print("Updated video.", flush=True)
     else:
         print(f"ip address: {ip_address}")

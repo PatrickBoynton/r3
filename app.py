@@ -5,9 +5,9 @@ from models.update_video import update_video
 from db import db
 from models import VideoContext
 from models.create_video_context import create_video_context
+from models.create_video import create_video
+from utils import set_interval
 
-
-# http://172.17.0.156:5000/AA1.mp4
 def create_app():
     app = Flask(__name__, static_folder="/app/data", static_url_path="")
     CORS(app)
@@ -52,7 +52,10 @@ def create_app():
             create_video_context()
         else:
             print("Video context exists.", flush=True)
-
+    
+    set_interval(create_video, 1800, app)
+    
     api.register_blueprint(VideosRoutes)
     api.register_blueprint(VideoContextRoutes)
+    
     return app
