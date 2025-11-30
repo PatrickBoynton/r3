@@ -1,5 +1,5 @@
-import os
 import socket
+import os
 
 #  Run this file first.
 r3vids = "/home/mymar101/r3vids/.env"
@@ -10,16 +10,15 @@ data_folder = "/home/mymar101/r3vids/data"
 data_folder_mac = "/Users/patrick/r3/data"
 
 hostname = socket.gethostname()
-# ip_address = socket.gethostbyname(hostname)
 
 
 def get_ip_address():
-    s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-    s.connect(("8.8.8.8", 80))
-    ip = s.getsockname()[0]
-    s.close()
-
-    return ip
+    ip_list = socket.gethostbyname_ex(hostname)[2]
+    print(f"ip list: {ip_list}")
+    if "192" in ip_list[0]:
+        return  ip_list[0]
+    else:
+        return "localhost"
 
 
 try:
@@ -27,31 +26,17 @@ try:
 except:
     ip_address = "localhost"
 
+print(f"Ip address: {ip_address}")
+print(f"Current host: {hostname}")
 
-if "192" in ip_address:
-    print(f"hostname: {hostname}")
-    print(f"ip_address: {ip_address}")
-    if "Mac" in hostname:
-        with open(r3vids_mac, "w") as file, open(r3vue_mac, "w") as file2:
-            file.write(f"IP_ADDRESS={ip_address}\n")
-            file2.write(f"VITE_IP_ADDRESS={ip_address}")
-        with open(r3vids_mac, "a") as f:
-            f.write(f"CURRENT_OS={hostname}")
-    else:
-        with open(r3vids, "w") as file, open(r3vue, "w") as file2:
-            file.write(f"IP_ADDRESS={ip_address}\n")
-            file2.write(f"VITE_IP_ADDRESS={ip_address}")
+with open (r3vids or r3vids_mac, "w") as file:
+    file.write(f"IP_ADDRESS={ip_address}\n")
+    file.write(f"CURRENT_OS={hostname}\n")
 
-            with open(r3vids, "a") as f:
-                f.write(f"CURRENT_OS={hostname}\n")
+with open(r3vue or r3vue_mac, "w") as file2:
+    file2.write(f"VITE_IP_ADDRESS={ip_address}\n")
 
+if not data_folder:
+    os.mkdir(data_folder)
 else:
-    print("localhost")
-    with open(r3vids_mac, "w") as file, open(r3vue_mac, "w") as file2:
-        file.write(f"IP_ADDRESS=localhost")
-        file2.write(f"VITE_IP_ADDRESS=localhost")
-
-if not os.path.exists(data_folder_mac):
-    os.makedirs(data_folder_mac)
-else:
-    print("Data folder exists.")
+    print("Data folder already exists.")
