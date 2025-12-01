@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { ref } from "vue"
+import { onMounted, onUnmounted, ref } from "vue"
 import type { Video, VideoContext } from "../types"
 import Requests from "../requests"
 import Controls from "./Controls.vue"
@@ -47,6 +47,26 @@ const onPause = async () => {
         await Requests.updateVideo(props.ipAddress, video.value)
     }
 }
+
+let timerId: number | null = null
+
+const setTimer = () => {
+    timerId = setInterval(() => {
+        if (video.value && videoRef.value.currentTime >  0) {
+            video.value.video_status.current_play_time = videoRef.value?.currentTime
+             Requests.updateVideo(props.ipAddress, video.value)
+        }
+    }, 60)
+}
+onMounted(() => {
+    setTimer()
+})
+
+onUnmounted(() => {
+    if (timerId) {
+        clearInterval(timerId)
+    }
+})
 </script>
 <template>
     <div class="one">

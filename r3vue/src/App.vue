@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref, watch } from "vue"
+import { onMounted, onUnmounted, ref, watch } from "vue"
 import One from "./components/One.vue"
 import Two from "./components/Two.vue"
 import Requests from "./requests"
