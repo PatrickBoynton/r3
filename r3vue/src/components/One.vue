@@ -52,7 +52,7 @@ let timerId: number | null = null
 
 const setTimer = () => {
     timerId = setInterval(() => {
-        if (video.value && videoRef.value.currentTime >  0) {
+        if (video.value && videoRef.value.currentTime >  0 && !videoRef.value?.paused)  {
             video.value.video_status.current_play_time = videoRef.value?.currentTime
              Requests.updateVideo(props.ipAddress, video.value)
         }
@@ -79,13 +79,7 @@ onUnmounted(() => {
             @loadedmetadata="onMetadataLoaded" />
         <div class="name">
             <h2>
-                {{
-                    currentPlayTime
-                        ? convertToPlayTime(
-                              (video?.duration as number) - currentPlayTime,
-                          )
-                        : ""
-                }}
+                {{ video?.duration ? convertToPlayTime(currentPlayTime) : "" }}
             </h2>
             <h2>
                 {{
@@ -93,7 +87,13 @@ onUnmounted(() => {
                 }}
             </h2>
             <h2>
-                {{ video?.duration ? convertToPlayTime(video?.duration) : "" }}
+                {{
+                    currentPlayTime
+                        ? convertToPlayTime(
+                              (video?.duration as number) - currentPlayTime,
+                          )
+                        : ""
+                }}
             </h2>
         </div>
         <Controls
