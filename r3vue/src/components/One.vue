@@ -11,7 +11,7 @@ const props = defineProps<{
     videoContext: VideoContext | null
 }>()
 
-const video = defineModel<Video | null>("video")
+let video = defineModel<Video | null>("video")
 const videos = defineModel<Video[] | null>("videos")
 const search = defineModel("search")
 const selectionOption = defineModel("selectionOption")
@@ -52,9 +52,15 @@ let timerId: number | null = null
 
 const setTimer = () => {
     timerId = setInterval(() => {
-        if (video.value && videoRef.value.currentTime >  0 && !videoRef.value?.paused)  {
-            video.value.video_status.current_play_time = videoRef.value?.currentTime
-             Requests.updateVideo(props.ipAddress, video.value)
+        if (
+            video.value &&
+            videoRef.value &&
+            videoRef.value.currentTime > 0 &&
+            !videoRef.value?.paused
+        ) {
+            video.value.video_status.current_play_time =
+                videoRef.value?.currentTime
+            Requests.updateVideo(props.ipAddress, video.value)
         }
     }, 60)
 }
@@ -67,6 +73,11 @@ onUnmounted(() => {
         clearInterval(timerId)
     }
 })
+
+const handleEnded = () => {
+    const rv = Requests.getRandomVideo(props.ipAddress, "")
+    video = rv
+}
 </script>
 <template>
     <div class="one">
@@ -76,10 +87,11 @@ onUnmounted(() => {
             controls
             @pause="onPause"
             @timeupdate="getTime"
-            @loadedmetadata="onMetadataLoaded" />
+            @loadedmetadata="onMetadataLoaded"
+            @ended="handleEnded" />
         <div class="name">
             <h2>
-                {{ video?.duration ? convertToPlayTime(currentPlayTime) : "" }}
+                {{ !video?.duration ? "" : convertToPlayTime(currentPlayTime) }}
             </h2>
             <h2>
                 {{
