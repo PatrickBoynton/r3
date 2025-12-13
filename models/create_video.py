@@ -55,6 +55,7 @@ def create_video():
             print(f"File: {file}", flush=True)
             db.session.add(video)
         else:
+            print(f"File: {file}", flush=True)
             continue
 
     db.session.commit()
