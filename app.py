@@ -47,6 +47,7 @@ def create_app():
         else:
             print("Videos in the database.", flush=True)
             update_video()
+            create_video()
 
         if not db.session.query(VideoContext).first():
             create_video_context()
