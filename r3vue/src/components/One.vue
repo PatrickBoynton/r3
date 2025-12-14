@@ -2,9 +2,9 @@
 import { onMounted, onUnmounted, ref } from "vue"
 import type { Video, VideoContext } from "../types"
 import Requests from "../requests"
-import Controls from "./Controls.vue"
 import Modal from "./Modal.vue"
-import { convertToPlayTime } from "../utils.ts"
+import Controls from "./Controls.vue";
+import Filters from "./Filters.vue";
 
 const props = defineProps<{
     ipAddress: string
@@ -16,7 +16,6 @@ const videos = defineModel<Video[] | null>("videos")
 const search = defineModel("search")
 const selectionOption = defineModel("selectionOption")
 
-const currentPlayTime = ref(0)
 const showModal = ref(false)
 
 const videoRef = ref<HTMLVideoElement | null>(null)
@@ -78,13 +77,6 @@ const handleEnded = () => {
     const rv = Requests.getRandomVideo(props.ipAddress, "")
     video = rv
 }
-const handlePlayToggle = () => {
-   if(videoRef.value?.paused) {
-     videoRef.value.play()
-   } else {
-     videoRef.value.pause()
-   }
-}
 </script>
 <template>
     <div class="one">
@@ -96,27 +88,9 @@ const handlePlayToggle = () => {
             @timeupdate="getTime"
             @loadedmetadata="onMetadataLoaded"
             @ended="handleEnded" />
-        <div class="name">
-            <button @click="handlePlayToggle">Play</button>
-            <h2>
-                {{ !video?.duration ? "" : convertToPlayTime(currentPlayTime) }}
-            </h2>
-            <h2>
-                {{
-                    video?.title || "Click the RV button or click a video card."
-                }}
-            </h2>
-            <h2>
-                {{
-                    currentPlayTime
-                        ? convertToPlayTime(
-                              (video?.duration as number) - currentPlayTime,
-                          )
-                        : ""
-                }}
-            </h2>
-        </div>
-        <Controls
+        <Controls v-model:video="video"
+                  v-model:videoRef="videoRef" />
+        <Filters
             v-model:selectionOption="selectionOption"
             :ipAddress="ipAddress"
             :handleInput="handleInput"
