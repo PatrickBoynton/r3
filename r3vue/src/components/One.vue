@@ -78,6 +78,13 @@ const handleEnded = () => {
     const rv = Requests.getRandomVideo(props.ipAddress, "")
     video = rv
 }
+const handlePlayToggle = () => {
+   if(videoRef.value?.paused) {
+     videoRef.value.play()
+   } else {
+     videoRef.value.pause()
+   }
+}
 </script>
 <template>
     <div class="one">
@@ -90,6 +97,7 @@ const handleEnded = () => {
             @loadedmetadata="onMetadataLoaded"
             @ended="handleEnded" />
         <div class="name">
+            <button @click="handlePlayToggle">Play</button>
             <h2>
                 {{ !video?.duration ? "" : convertToPlayTime(currentPlayTime) }}
             </h2>
