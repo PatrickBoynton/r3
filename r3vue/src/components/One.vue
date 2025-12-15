@@ -15,6 +15,7 @@ let video = defineModel<Video | null>("video")
 const videos = defineModel<Video[] | null>("videos")
 const search = defineModel("search")
 const selectionOption = defineModel("selectionOption")
+const currentPlayTime = ref(0)
 
 const showModal = ref(false)
 
@@ -89,7 +90,8 @@ const handleEnded = () => {
             @loadedmetadata="onMetadataLoaded"
             @ended="handleEnded" />
         <Controls v-model:video="video"
-                  v-model:videoRef="videoRef" />
+                  v-model:videoRef="videoRef"
+                  v-model:currentPlayTime="currentPlayTime"/>
         <Filters
             v-model:selectionOption="selectionOption"
             :ipAddress="ipAddress"

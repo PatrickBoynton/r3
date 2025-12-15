@@ -7,11 +7,9 @@ export const convertToPlayTime = (time: number) => {
     const minutes = dateObj.getUTCMinutes()
     const seconds = dateObj.getUTCSeconds()
     const timeString =
-        time > 0
-            ? `${hours.toString().padStart(2, "0")}
+        `${hours.toString().padStart(2, "0")}
                                         :${minutes.toString().padStart(2, "0")}
                                         :${seconds.toString().padStart(2, "0")}`
-            : ""
 
     return timeString
 }
