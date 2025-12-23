@@ -40,21 +40,21 @@ def create_app():
     api = Api(app)
 
     with app.app_context():
+        import os
         db.create_all()
-
-        if not db.session.query(Video).first():
+        
+        if os.environ.get('WERKZEUG_RUN_MAIN') == 'true':
             create_video()
-        else:
-            print("Videos in the database.", flush=True)
+        if  db.session.query(Video).first():
             update_video()
-            create_video()
+
 
         if not db.session.query(VideoContext).first():
             create_video_context()
         else:
             print("Video context exists.", flush=True)
     
-    set_interval(create_video, 1800, app)
+    set_interval(create_video, 900, app)
     
     api.register_blueprint(VideosRoutes)
     api.register_blueprint(VideoContextRoutes)
