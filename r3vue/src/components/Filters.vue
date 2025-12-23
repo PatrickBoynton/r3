@@ -59,8 +59,7 @@ const onRandomNewVideoSelect = async () => {
     border: 2px solid #ffdb60;
     border-radius: 5px;
     width: 100%;
-    margin-left: 30px;
-    padding: 20px 0;
+    padding: 5px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -95,6 +94,7 @@ select {
     width: 80%;
     cursor: pointer;
 }
+
 .overview-modal {
     position: absolute;
     border: 5px solid #ffdb60;
@@ -108,6 +108,7 @@ select {
     align-items: center;
     margin: 0 auto;
 }
+
 .overview-modal button {
     width: 90%;
 }
