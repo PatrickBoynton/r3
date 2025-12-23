@@ -47,7 +47,7 @@ const handleMuteToggle = () => {
     justify-content: center;
     align-content: center;
     align-items: center;
-    width: 70%;
+    width: 90%;
 }
 
 .time {
@@ -61,14 +61,14 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-runnable-track {
     border: 2px solid #ffdb60;
-    height: 15px;
+    height: 5px;
     background-color: #b19849;
     margin: 0 5px;
 }
 
 input[type="range"]::-moz-range-track {
     border: 2px solid #ffdb60;
-    height: 15px;
+    height: 5px;
     background-color: #b19849;
     margin: 0 5px;
 }
@@ -87,7 +87,7 @@ input[type="range"]::-webkit-slider-thumb {
     appearance: none;
     border: 2px solid #ffdb60;
     height: 20px;
-    width: 15%;
+    width: 20px;
     border-radius: 20px;
     background-color: #201449;
 }
