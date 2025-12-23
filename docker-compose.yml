@@ -16,8 +16,8 @@ services:
             POSTGRES_USER: postgres
             POSTGRES_PASSWORD: safepass1
             POSTGRES_DB: r3vidsf
-        ports:
-            - 5432:5432
+#        ports:
+#            - 5432:5432
         volumes:
             - pgdata:/var/lib/postgresql/@database:5432/r3vidsf
     r3vue:
