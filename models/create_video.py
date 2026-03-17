@@ -57,6 +57,6 @@ def create_video():
         else:
             print(f"File: {file}", flush=True)
             continue
-
+    print(f"ip address: {ip_address}", flush=True)
     db.session.commit()
     return video
