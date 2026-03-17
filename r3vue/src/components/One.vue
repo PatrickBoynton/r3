@@ -3,8 +3,8 @@ import { onMounted, onUnmounted, ref } from "vue"
 import type { Video, VideoContext } from "../types"
 import Requests from "../requests"
 import Modal from "./Modal.vue"
-import Controls from "./Controls.vue";
-import Filters from "./Filters.vue";
+import Controls from "./Controls.vue"
+import Filters from "./Filters.vue"
 
 const props = defineProps<{
     ipAddress: string
@@ -73,7 +73,23 @@ onUnmounted(() => {
         clearInterval(timerId)
     }
 })
+const handleKeyEvents = (event: any) => {
+    if (event.key === "p") {
+        if (videoRef.value?.paused) {
+            videoRef.value.play()
+        } else {
+            videoRef.value?.pause()
+        }
+    }
 
+    if (event.key === "f") {
+        videoRef.value?.requestFullscreen()
+    }
+
+    if (event.key === "m" && videoRef.value) {
+      videoRef.value.muted = !videoRef.value?.muted
+    }
+}
 const handleEnded = () => {
     const rv = Requests.getRandomVideo(props.ipAddress, "")
     video = rv
@@ -84,14 +100,16 @@ const handleEnded = () => {
         <video
             ref="videoRef"
             :src="video?.url"
-            controls
             @pause="onPause"
+            @keydown="(e: any) => handleKeyEvents(e)"
             @timeupdate="getTime"
             @loadedmetadata="onMetadataLoaded"
             @ended="handleEnded" />
-        <Controls v-model:video="video"
-                  v-model:videoRef="videoRef"
-                  v-model:currentPlayTime="currentPlayTime"/>
+        <Controls
+            v-model:video="video as Video"
+            v-model:videoRef="videoRef"
+            :ipAddress="ipAddress"
+            v-model:currentPlayTime="currentPlayTime" />
         <Filters
             v-model:selectionOption="selectionOption"
             :ipAddress="ipAddress"
@@ -105,7 +123,7 @@ const handleEnded = () => {
 <style scoped>
 video {
     width: 100%;
-    height: 100%;
+    height: 500px;
     margin-left: 30px;
 }
 
