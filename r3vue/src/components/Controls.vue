@@ -1,9 +1,14 @@
 <script setup lang="ts">
 import { convertToPlayTime } from "../utils.ts"
+import Requests from "../requests.ts"
+import type { Video } from "../types.ts"
+import {onMounted, ref, watch} from "vue"
 
+const props = defineProps<{ ipAddress: string }>()
 const videoRef = defineModel("videoRef")
-const video = defineModel("video")
+const video = defineModel<Video>("video")
 const currentPlayTime = defineModel("currentPlayTime")
+let currentTime = defineModel("currentTime")
 
 const handlePlayToggle = () => {
     if (videoRef.value?.paused) {
@@ -19,6 +24,26 @@ const handleFullScreenToggle = () => {
 const handleMuteToggle = () => {
     videoRef.value.muted = !videoRef.value?.muted
 }
+
+const handleResetPlayTime = () => {
+    const updatedVideo = {
+        ...video.value!,
+        video_status: {
+            ...video.value!.video_status,
+            current_play_time: 0,
+        },
+    }
+    Requests.updateVideo(props.ipAddress, updatedVideo)
+    video.value = updatedVideo
+    Requests.getVideos(props.ipAddress)
+}
+onMounted(() => {
+  currentTime = videoRef.value?.currentTime
+})
+
+watch(currentTime, () => {
+  currentTime = videoRef.value?.currentTime
+})
 </script>
 
 <template>
@@ -28,9 +53,9 @@ const handleMuteToggle = () => {
         </h2>
         <button @click="handlePlayToggle">P</button>
         <h2 class="time">
-            {{ convertToPlayTime(currentPlayTime) }}
+            {{ convertToPlayTime(currentPlayTime as number) }}
         </h2>
-        <input type="range" name="test" id="" />
+        <input type="range" name="test" id="" @seeking="currentPlayTime" @change="currentPlayTime" v-model="currentPlayTime" min="0" :max="video?.duration" />
         <h2 class="time">
             {{
                 convertToPlayTime((video?.duration as number) - currentPlayTime)
@@ -38,6 +63,7 @@ const handleMuteToggle = () => {
         </h2>
         <button @click="handleMuteToggle">M</button>
         <button @click="handleFullScreenToggle">FS</button>
+        <button @click="handleResetPlayTime">RS</button>
     </div>
 </template>
 
