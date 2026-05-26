@@ -87,12 +87,28 @@ const handleKeyEvents = (event: any) => {
     }
 
     if (event.key === "m" && videoRef.value) {
-      videoRef.value.muted = !videoRef.value?.muted
+        videoRef.value.muted = !videoRef.value?.muted
     }
 }
 const handleEnded = () => {
     const rv = Requests.getRandomVideo(props.ipAddress, "")
     video = rv
+}
+
+const onMouse = () => {
+    if (videoRef.value?.paused) {
+        videoRef.value.play()
+    } else {
+        videoRef.value?.pause()
+    }
+}
+
+const handleDouble = () => {
+  if(document.fullscreenElement) {
+    document.exitFullscreen()
+  } else {
+    videoRef.value?.requestFullscreen()
+  }
 }
 </script>
 <template>
@@ -102,8 +118,10 @@ const handleEnded = () => {
             :src="video?.url"
             @pause="onPause"
             @keydown="(e: any) => handleKeyEvents(e)"
+            @mousedown="onMouse"
             @timeupdate="getTime"
             @loadedmetadata="onMetadataLoaded"
+            @dblclick="handleDouble"
             @ended="handleEnded" />
         <Controls
             v-model:video="video as Video"

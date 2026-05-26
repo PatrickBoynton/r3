@@ -2,12 +2,12 @@
 import { convertToPlayTime } from "../utils.ts"
 import Requests from "../requests.ts"
 import type { Video } from "../types.ts"
-import {onMounted, ref, watch} from "vue"
+import { onMounted, watch } from "vue"
 
 const props = defineProps<{ ipAddress: string }>()
 const videoRef = defineModel("videoRef")
 const video = defineModel<Video>("video")
-const currentPlayTime = defineModel("currentPlayTime")
+let currentPlayTime = defineModel("currentPlayTime")
 let currentTime = defineModel("currentTime")
 
 const handlePlayToggle = () => {
@@ -38,12 +38,20 @@ const handleResetPlayTime = () => {
     Requests.getVideos(props.ipAddress)
 }
 onMounted(() => {
-  currentTime = videoRef.value?.currentTime
+    currentTime = videoRef.value?.currentTime
 })
 
 watch(currentTime, () => {
-  currentTime = videoRef.value?.currentTime
+    currentTime = videoRef.value?.currentTime
+    currentPlayTime = videoRef.value?.currentTime
 })
+
+const handleCurrentPlayTime = () => {
+    if (videoRef.value) {
+        currentTime = videoRef.value?.currentTime
+        currentPlayTime = videoRef.value?.currentTime
+    }
+}
 </script>
 
 <template>
@@ -55,7 +63,14 @@ watch(currentTime, () => {
         <h2 class="time">
             {{ convertToPlayTime(currentPlayTime as number) }}
         </h2>
-        <input type="range" name="test" id="" @seeking="currentPlayTime" @change="currentPlayTime" v-model="currentPlayTime" min="0" :max="video?.duration" />
+        <input
+            type="range"
+            name="test"
+            id=""
+            @change="handleCurrentPlayTime"
+            v-model="currentPlayTime"
+            min="0"
+            :max="video?.duration" />
         <h2 class="time">
             {{
                 convertToPlayTime((video?.duration as number) - currentPlayTime)
