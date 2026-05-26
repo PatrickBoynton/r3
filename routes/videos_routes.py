@@ -120,47 +120,41 @@ class VideoRandom(MethodView):
     @blueprint.response(200, VideoSchema)
     def get(self, filter_args):
         count = Video.query.count()
+        min_plays = db.session.query(func.min(VideoStatus.selection_count)).scalar()
+        videos = (db.session.query(Video)
+                  .join(VideoStatus)
+                  .filter(VideoStatus.selection_count == min_plays)
+                  .all())
         if "played" in filter_args:
-            random_videos = (
-                Video.query.join(VideoStatus)
-                .filter(VideoStatus.played == False)
-                .order_by(func.random()).limit(5).all()
-            )
-            random_video = random.choice(random_videos)
+            random_video = random.choice(videos)
             if "lte" in filter_args:
                 random_videos = (
-                    Video.query.join(VideoStatus)
-                    .filter(
-                            VideoStatus.played == False,
-                            Video.duration <= int(filter_args["lte"]) * 60,
-                    )
-                    .order_by(func.random()).limit(5).all()
+                    (db.session.query(Video)
+                     .join(VideoStatus)
+                    .filter(VideoStatus.selection_count == min_plays,
+                            Video.duration <= int(filter_args["lte"]) * 6)).all()
                 )
                 random_video = random.choice(random_videos)
             if "gte" in filter_args:
                 random_videos = (
                     Video.query.join(VideoStatus)
                     .filter(
-                            VideoStatus.played == False,
+                            VideoStatus.selection_count == min_plays,
                             Video.duration >= int(filter_args["gte"]) * 60,
-                    )
-                    .order_by(func.random()).limit(5).all()
+                    ).all()
                 )
                 random_video = random.choice(random_videos)
         elif "lte" in filter_args:
             random_videos = (
-                Video.query.filter(Video.duration <= int(filter_args["lte"] * 60))
-                .order_by(func.random()).limit(5).all()
+                Video.query.filter(Video.duration <= int(filter_args["lte"] * 60)).all()
             )
             random_video = random.choice(random_videos)
         elif "gte" in filter_args:
             random_videos = (
-                Video.query.filter(Video.duration >= int(filter_args["gte"] * 60))
-                .order_by(func.random()).limit(5).all()
+                Video.query.filter(Video.duration >= int(filter_args["gte"] * 60)).all()
             )
             random_video = random.choice(random_videos)
         else:
-            offset = random.randint(0, max(0, count - 1))
             random_video = Video.query.offset(random.randrange(count)).first()
             # random_video = random.choice(random_videos)
 
