@@ -132,7 +132,7 @@ class VideoRandom(MethodView):
                     (db.session.query(Video)
                      .join(VideoStatus)
                     .filter(VideoStatus.selection_count == min_plays,
-                            Video.duration <= int(filter_args["lte"]) * 6)).all()
+                            Video.duration <= int(filter_args["lte"]) * 60)).all()
                 )
                 random_video = random.choice(random_videos)
             if "gte" in filter_args:
