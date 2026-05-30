@@ -1,10 +1,11 @@
-import datetime
 import os
 import subprocess
 
 from db import db
 from models import Video
 from models.video_status import VideoStatus
+from datetime import datetime
+import zoneinfo
 
 ip_address = os.getenv("IP_ADDRESS")
 
@@ -47,15 +48,14 @@ def create_video():
             url=f"http://{ip_address}:5001/{file}",
             image=None,
             duration=get_duration(path + file),
-            uploaded_date=datetime.datetime.now(),
+            uploaded_date=datetime.now(),
             video_status=video_status,
         )
         
         if not db.session.query(Video).filter(Video.title == video.title).first():
-            print(f"File: {file}", flush=True)
             db.session.add(video)
         else:
-            print(f"File: {file}", flush=True)
-            continue
+            break
     db.session.commit()
+
     return video
