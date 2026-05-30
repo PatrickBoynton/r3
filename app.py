@@ -5,7 +5,6 @@ from flask_smorest import Api
 from db import db
 from models import VideoContext
 from models.create_video_context import create_video_context
-from models.update_video import update_video
 from utils import set_interval
 
 
@@ -42,25 +41,22 @@ def create_app():
 
     with app.app_context():
         import os
+
         db.create_all()
 
-        video = db.session.query(Video).first()
-        from datetime import datetime
-        import zoneinfo
-        if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' and not video:
+        if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' and db.session.query(Video).first() is None:
             create_video()
-        elif video:
-            update_video()
-            print(f'Video updated at: {datetime.now(zoneinfo.ZoneInfo("America/New_York")).strftime("%-I:%M %p")}')
+            print(f'Finished adding all videos.')
+        else:
+            print(f'Videos already exist.')
 
         if not db.session.query(VideoContext).first():
             create_video_context()
         else:
             print("Video context exists.", flush=True)
 
-    set_interval(create_video, 900, app)
-    print(f'Video updated at: {datetime.now(zoneinfo.ZoneInfo("America/New_York")).strftime("%-I:%M %p")}')
-    
+    set_interval(create_video, 300, app)
+
     api.register_blueprint(VideosRoutes)
     api.register_blueprint(VideoContextRoutes)
 
