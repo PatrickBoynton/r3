@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_smorest import Api
 
 from db import db
-from models import VideoContext
+from models import VideoContext, Video
 from models.create_video_context import create_video_context
 from utils import set_interval
 
@@ -33,7 +33,6 @@ def create_app():
     db.init_app(app)
 
     from models.create_video import create_video
-    from models.video import Video
     from routes.videos_routes import blueprint as VideosRoutes
     from routes.video_context_routes import blueprint as VideoContextRoutes
 
@@ -44,7 +43,7 @@ def create_app():
 
         db.create_all()
 
-        if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' and db.session.query(Video).first() is None:
+        if os.environ.get('WERKZEUG_RUN_MAIN') == 'true' and not db.session.query(Video).first():
             create_video()
             print(f'Finished adding all videos.')
         else:

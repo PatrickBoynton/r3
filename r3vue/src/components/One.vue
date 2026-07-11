@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import { onMounted, onUnmounted, ref } from "vue"
+import {onBeforeUnmount, onMounted, onUnmounted, ref} from "vue"
 import type { Video, VideoContext } from "../types"
 import Requests from "../requests"
 import Modal from "./Modal.vue"
@@ -64,6 +64,7 @@ const setTimer = () => {
         }
     }, 60)
 }
+
 onMounted(() => {
     setTimer()
 })
@@ -80,6 +81,7 @@ const handleKeyEvents = (event: any) => {
         } else {
             videoRef.value?.pause()
         }
+        
     }
 
     if (event.key === "f") {
@@ -101,6 +103,13 @@ const onMouse = () => {
     } else {
         videoRef.value?.pause()
     }
+    if(document.fullscreenElement) {
+      if (videoRef.value?.paused) {
+        videoRef.value.play()
+      } else {
+        videoRef.value?.pause()
+      }
+    }
 }
 
 const handleDouble = () => {
@@ -116,6 +125,8 @@ const handleDouble = () => {
         <video
             ref="videoRef"
             :src="video?.url"
+            preload="auto"
+            muted
             @pause="onPause"
             @keydown="(e: any) => handleKeyEvents(e)"
             @mousedown="onMouse"

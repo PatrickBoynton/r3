@@ -105,8 +105,7 @@ class SingleVideo(MethodView):
             video = Video(**video_data)
             db.session.add(video)
             db.session.commit()
-
-        print(f"Returning video: {video.title}")
+            print(f"Returning video: {video.title}")
 
         return video
 

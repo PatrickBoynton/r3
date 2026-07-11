@@ -51,11 +51,12 @@ def create_video():
             uploaded_date=datetime.now(),
             video_status=video_status,
         )
-        
+
         if not db.session.query(Video).filter(Video.title == video.title).first():
             db.session.add(video)
         else:
-            break
+            continue
+            # break
     db.session.commit()
 
     return video
