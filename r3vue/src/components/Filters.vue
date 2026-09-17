@@ -4,6 +4,7 @@ import { type Video } from "../types"
 import OverviewModal from "./OverviewModal.vue"
 import SelectVideoFilter from "./SelectVideoFilter.vue"
 import { ref } from "vue"
+import Modal from "./Modal.vue";
 
 const props = defineProps<{
     ipAddress: string
@@ -38,21 +39,25 @@ const onRandomNewVideoSelect = async () => {
     video.value = newRandomVideo
     videos.value = await Requests.getVideos(props.ipAddress)
 }
+const onVideoUploadPressed = () => {
+  showModal.value = true
+}
 </script>
 <template>
     <div class="controls">
         <SelectVideoFilter v-model:selection-option="selectionOption" />
         <button @click="onRandomVideoSelect">RV</button>
         <button @click="onRandomNewVideoSelect">RNV</button>
-        <input @input="handleInput" type="text" />
+        <input @input="handleInput" type="text" id="search" name="search"/>
         <button @click="showOverview = true">OV</button>
-        <button @click="showModal = true">UL</button>
+        <button @click="onVideoUploadPressed">UL</button>
         <button @click="onResetMetaData">DVS</button>
     </div>
     <OverviewModal
         v-if="showOverview"
         :ipAddress="ipAddress"
         v-model:show-overview="showOverview" />
+    <Modal :ipAddress="ipAddress"/>
 </template>
 <style lang="css" scoped>
 .controls {
