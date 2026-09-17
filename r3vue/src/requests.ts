@@ -58,11 +58,8 @@ class Requests {
     }
 
     static async uploadVideo(formData: FormData) {
-        await fetch('http://localhost:5001/videos/upload/', {
+        await fetch('http://localhost:5001/videos/upload', {
             method: 'POST',
-            headers: {
-                "Content-Type": "application/json",
-            },
             body: formData,
         })
     }
