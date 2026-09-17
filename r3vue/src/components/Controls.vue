@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { convertToPlayTime } from "../utils.ts"
-import Requests from "../requests.ts"
 import type { Video } from "../types.ts"
 import { onMounted, watch } from "vue"
+import Requests from "../requests.ts"
 
 const props = defineProps<{ ipAddress: string }>()
 const videoRef = defineModel("videoRef")
@@ -25,7 +25,7 @@ const handleMuteToggle = () => {
     videoRef.value.muted = !videoRef.value?.muted
 }
 
-const handleResetPlayTime = () => {
+const handleResetPlayTime = async () => {
     const updatedVideo = {
         ...video.value!,
         video_status: {
@@ -33,9 +33,9 @@ const handleResetPlayTime = () => {
             current_play_time: 0,
         },
     }
-    Requests.updateVideo(props.ipAddress, updatedVideo)
+    await Requests.updateVideo(props.ipAddress, updatedVideo)
     video.value = updatedVideo
-    Requests.getVideos(props.ipAddress)
+    window.location.reload()
 }
 onMounted(() => {
     currentTime = videoRef.value?.currentTime
