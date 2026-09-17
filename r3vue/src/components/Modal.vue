@@ -1,12 +1,44 @@
 <script setup lang="ts">
+import Requests from "../requests.ts"
+import { ref } from "vue"
+
 const showModal = defineModel("showModal")
+const props = defineProps<{ ipAddress: string }>()
+const selectedFile = ref(null)
+
+const sendData = async (e: any) => {
+    const formData = new FormData()
+    formData.append('file', selectedFile.value)
+    console.log(`Form data: ${formData}`)
+    try {
+      await Requests.uploadVideo(formData)
+    } catch (e) {
+      throw new Error(`Upload failed: ${e.message}`)
+    }
+    showModal.value = false
+    await Requests.getVideos(props.ipAddress)
+}
+
+const onFileChange = (e: Event) => {
+  const target = e.target as HTMLInputElement
+  selectedFile.value = target.files?.[0] ?? null
+}
 </script>
 <template>
     <div class="modal" v-if="showModal">
         <h1>Upload Video:</h1>
-        <input type="file" name="" id="" />
-        <input type="submit" value="Upload" />
-        <input @click="showModal = false" type="button" value="Close" />
+        <form
+            method="POST"
+            @submit.prevent="(e) => sendData(e)"
+            enctype="multipart/form-data">
+            <input type="file" name="file" id="file" @change="onFileChange" />
+            <input type="submit" name="btn" value="Upload" id="btn" />
+            <input
+                @click="showModal = false"
+                type="button"
+                value="Close"
+                id="close" />
+        </form>
     </div>
 </template>
 <style>
@@ -24,9 +56,11 @@ const showModal = defineModel("showModal")
     justify-content: center;
     align-items: center;
 }
+
 .modal input {
     width: 90%;
 }
+
 .modal input:hover {
     background-color: #d04c82;
     color: #432995;
