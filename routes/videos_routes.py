@@ -7,8 +7,7 @@ from flask_smorest import Blueprint
 from sqlalchemy import desc, func
 
 from db import db
-from models import Video, VideoContext, VideoStatus
-from models.create_video import create_video
+from models import Video, VideoContext, VideoStatus, create_video
 from schemas import VideoSchema, RandomVideoQueryArgs
 
 blueprint = Blueprint("videos", __name__, description="Operations on videos")
@@ -130,8 +129,8 @@ class VideoRandom(MethodView):
                 random_videos = (
                     (db.session.query(Video)
                      .join(VideoStatus)
-                    .filter(VideoStatus.selection_count == min_plays,
-                            Video.duration <= int(filter_args["lte"]) * 60)).all()
+                     .filter(VideoStatus.selection_count == min_plays,
+                             Video.duration <= int(filter_args["lte"]) * 60)).all()
                 )
                 random_video = random.choice(random_videos)
             if "gte" in filter_args:
@@ -176,9 +175,9 @@ class VideoUpdate(MethodView):
     @blueprint.response(201, VideoSchema)
     def post(self):
         uploaded_file = request.files["file"]
-
         if uploaded_file.filename != "":
-            uploaded_file.save(uploaded_file.filename)
+            uploaded_file.save("/app/data/" + uploaded_file.filename)
             create_video()
+            print(f"Video added: {uploaded_file.filename}", flush=True)
 
         return ""
