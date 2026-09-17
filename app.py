@@ -53,8 +53,8 @@ def create_app():
             create_video_context()
         else:
             print("Video context exists.", flush=True)
-
-    set_interval(create_video, 300, app)
+    if os.environ.get("WERKZEUG_RUN_MAIN") == "true":
+        set_interval(create_video, 300, app)
 
     api.register_blueprint(VideosRoutes)
     api.register_blueprint(VideoContextRoutes)
