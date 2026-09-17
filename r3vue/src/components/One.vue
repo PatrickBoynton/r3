@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import {onBeforeUnmount, onMounted, onUnmounted, ref} from "vue"
+import { onMounted, ref } from "vue"
 import type { Video, VideoContext } from "../types"
 import Requests from "../requests"
 import Modal from "./Modal.vue"
@@ -69,11 +69,6 @@ onMounted(() => {
     setTimer()
 })
 
-onUnmounted(() => {
-    if (timerId) {
-        clearInterval(timerId)
-    }
-})
 const handleKeyEvents = (event: any) => {
     if (event.key === "p") {
         if (videoRef.value?.paused) {
@@ -81,7 +76,6 @@ const handleKeyEvents = (event: any) => {
         } else {
             videoRef.value?.pause()
         }
-        
     }
 
     if (event.key === "f") {
@@ -92,9 +86,9 @@ const handleKeyEvents = (event: any) => {
         videoRef.value.muted = !videoRef.value?.muted
     }
 }
-const handleEnded = () => {
-    const rv = Requests.getRandomVideo(props.ipAddress, "")
-    video = rv
+const handleEnded = async () => {
+    video.value = await Requests.getRandomVideo(props.ipAddress, "")
+    await Requests.getVideos(props.ipAddress)
 }
 
 const onMouse = () => {
@@ -103,21 +97,21 @@ const onMouse = () => {
     } else {
         videoRef.value?.pause()
     }
-    if(document.fullscreenElement) {
-      if (videoRef.value?.paused) {
-        videoRef.value.play()
-      } else {
-        videoRef.value?.pause()
-      }
+    if (document.fullscreenElement) {
+        if (videoRef.value?.paused) {
+            videoRef.value.play()
+        } else {
+            videoRef.value?.pause()
+        }
     }
 }
 
 const handleDouble = () => {
-  if(document.fullscreenElement) {
-    document.exitFullscreen()
-  } else {
-    videoRef.value?.requestFullscreen()
-  }
+    if (document.fullscreenElement) {
+        document.exitFullscreen()
+    } else {
+        videoRef.value?.requestFullscreen()
+    }
 }
 </script>
 <template>
@@ -125,8 +119,9 @@ const handleDouble = () => {
         <video
             ref="videoRef"
             :src="video?.url"
-            preload="auto"
+            preload="metadata"
             muted
+            :key="video?.id"
             @pause="onPause"
             @keydown="(e: any) => handleKeyEvents(e)"
             @mousedown="onMouse"
@@ -147,7 +142,7 @@ const handleDouble = () => {
             v-model:video="video"
             v-model:videos="videos" />
     </div>
-    <Modal v-model:showModal="showModal" />
+    <Modal v-model:showModal="showModal" :ip-address="ipAddress" />
 </template>
 <style scoped>
 video {
