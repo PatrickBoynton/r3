@@ -11,7 +11,7 @@ def set_interval(func, seconds, app):
         except Exception as e:
             print(f"Func cannot run. {e}", flush=True)
         finally:
-            print(f'Finish Scan at: {datetime.now(zoneinfo.ZoneInfo("America/New_York")).strftime("%-I:%M %p")}',
+            print(f'Finished Scan at: {datetime.now(zoneinfo.ZoneInfo("America/New_York")).strftime("%-I:%M %p")}',
                   flush=True)
 
     t = threading.Timer(seconds, func_wrapper)
