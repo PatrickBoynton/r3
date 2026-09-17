@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, onUnmounted, ref, watch } from "vue"
+import { onMounted, ref, watch } from "vue"
 import One from "./components/One.vue"
 import Two from "./components/Two.vue"
 import Requests from "./requests"
@@ -39,7 +39,7 @@ watch(search, () => {
         <One
             v-model:search="search"
             :video-context="videoContext"
-            v-model:video="video"
+            :video="video"
             :ipAddress="ipAddress"
             v-model:videos="videos" />
 
