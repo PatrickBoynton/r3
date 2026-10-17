@@ -1,5 +1,18 @@
 from uuid import uuid4
+
 from db import db
+
+video_tags = db.Table(
+        "video_tags",
+        db.Column("video_id",
+                  db.UUID(as_uuid=True),
+                  db.ForeignKey("videos.id"),
+                  primary_key=True),
+        db.Column("tag_id",
+                  db.UUID(as_uuid=True),
+                  db.ForeignKey("tags.id"),
+                  primary_key=True)
+)
 
 
 class Video(db.Model):
@@ -17,8 +30,9 @@ class Video(db.Model):
     uploaded_date = db.Column(db.DateTime(), nullable=False)
 
     video_status = db.relationship(
-        "VideoStatus",
-        back_populates="video",
-        uselist=False,
-        cascade="all, delete, delete-orphan",
+            "VideoStatus",
+            back_populates="video",
+            uselist=False,
+            cascade="all, delete, delete-orphan",
     )
+    tags = db.relationship("Tag", secondary=video_tags, back_populates="videos")

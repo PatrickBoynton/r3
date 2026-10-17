@@ -1,6 +1,11 @@
 from marshmallow import Schema, fields
 
 
+class TagSchema(Schema):
+    id = fields.Str(dump_only=True)
+    name = fields.Str()
+
+
 class VideoStatusSchema(Schema):
     id = fields.Str(dump_only=True)
     played = fields.Boolean(required=True)
@@ -17,6 +22,7 @@ class VideoSchema(Schema):
     url = fields.Str(required=True)
     image = fields.Str(required=False)
     duration = fields.Float(required=True)
+    tags = fields.List(fields.Nested(TagSchema))
     uploaded_date = fields.DateTime(required=True)
     video_status = fields.Nested(VideoStatusSchema, required=True)
 
