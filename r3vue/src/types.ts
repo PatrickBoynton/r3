@@ -6,6 +6,8 @@ export type Video = {
     duration: number
     uploaded_date: Date
     video_status: VideoStatus
+    category: Category
+    tags: [Tag]
 }
 
 type VideoStatus = {
@@ -24,4 +26,14 @@ export type VideoContext = {
     total_videos: number
     video_plays: number
     current_os: string
+}
+
+export type Tag = {
+    id: string
+    name: string
+}
+
+export type Category = {
+    id: string
+    name: string
 }
