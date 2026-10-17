@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/app
       - ./data:/app/data
-#    command: flask run
+    #    command: flask run
     depends_on:
       database:
         condition: service_healthy
