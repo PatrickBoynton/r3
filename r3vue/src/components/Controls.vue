@@ -90,7 +90,10 @@ const handleCurrentPlayTime = () => {
     align-items: center;
     width: 90%;
 }
-
+h2 {
+  display: flex;
+  margin-right: 20px;
+}
 .time {
     width: 100%;
 }
