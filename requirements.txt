@@ -3,7 +3,7 @@ flask-smorest
 black
 sqlalchemy
 flask-sqlalchemy
-psycopg2-binary
+psycopg
 Flask-Cors
 python-dotenv
 watchdog
