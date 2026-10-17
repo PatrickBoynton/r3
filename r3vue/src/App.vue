@@ -53,6 +53,13 @@ watch(search, () => {
 <style scoped>
 .container {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1250px 2fr;
+}
+
+@supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    .container {
+      grid-template-columns: 550px 2fr;
+    }
 }
 </style>

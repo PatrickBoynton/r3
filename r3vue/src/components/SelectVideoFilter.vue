@@ -21,4 +21,11 @@ const selectionOption = defineModel("selectionOption")
     </select>
 </template>
 
-<style scoped></style>
+<style scoped>
+  @supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    select {
+      width: 75%;
+    }
+}
+</style>

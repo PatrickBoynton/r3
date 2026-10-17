@@ -117,4 +117,13 @@ select {
 .overview-modal button {
     width: 90%;
 }
+@supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    .controls {
+      width: 96%;
+    }
+    input {
+      width: 200px;
+    }
+}
 </style>

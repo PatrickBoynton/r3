@@ -25,13 +25,24 @@ const handlePickedVideo = async (vid: any) => {
 </template>
 <style scoped>
 .two {
-    overflow: hidden;
-    height: 90vh;
-    display: flex;
-    justify-content: center;
+  margin-left: 33%;
 }
 
 ul {
-    overflow: scroll;
+    height: 90vh;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+@supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    ul {
+        width: 100%;
+    }
+
+    .two {
+    }
 }
 </style>

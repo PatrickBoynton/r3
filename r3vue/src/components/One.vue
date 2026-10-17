@@ -67,6 +67,7 @@ const setTimer = () => {
 
 onMounted(() => {
     setTimer()
+    console.log(video)
 })
 
 const handleKeyEvents = (event: any) => {
@@ -116,6 +117,12 @@ const handleDouble = () => {
 </script>
 <template>
     <div class="one">
+        <div class="section">
+            <button>Videos</button>
+            <button>Tutorials</button>
+            <button>Movies</button>
+            <button>Tags</button>
+        </div>
         <video
             ref="videoRef"
             :src="video?.url"
@@ -147,12 +154,15 @@ const handleDouble = () => {
 <style scoped>
 video {
     width: 100%;
-    height: 500px;
+    height: 80%;
     margin-left: 30px;
 }
 
 .one {
-    margin-left: 30px;
+    height: 98vh;
+    width: 61vw;
+    margin-left: 20px;
+    padding-bottom: 90px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -165,5 +175,18 @@ video {
 
 .name h2 {
     margin: 10px;
+}
+
+.section {
+    border: 2px solid #ffdb60;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+@supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    .one {
+    }
 }
 </style>
