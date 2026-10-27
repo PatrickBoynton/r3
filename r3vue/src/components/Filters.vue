@@ -61,13 +61,14 @@ const onVideoUploadPressed = () => {
 </template>
 <style lang="css" scoped>
 .controls {
-    border: 2px solid #ffdb60;
+     background-image: linear-gradient(#2c725f 2%, #00be88 40%);
     border-radius: 5px;
     width: 100%;
-    padding: 5px;
+    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
+    //margin-bottom: 15%;
 }
 
 select {
@@ -75,10 +76,20 @@ select {
     border-radius: 5px;
     font-size: 20px;
     color: #ffdb60;
+    background-color: #180f36;
     padding: 10px;
-    background-color: transparent;
 }
-
+.controls button {
+  background-color: #180f36;
+}
+.controls button:hover {
+  background-color: #d04c82;
+  border: 2px solid #180f36;
+}
+.controls input {
+  border: none;
+  background-color: #201449;
+}
 .modal {
     position: fixed;
     top: 50%;
@@ -104,7 +115,7 @@ select {
     position: absolute;
     border: 5px solid #ffdb60;
     border-radius: 5px;
-    background-color: #5838c2;
+    background-color: #201449;
     height: 40%;
     width: 40%;
     display: flex;
@@ -120,7 +131,8 @@ select {
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
     .controls {
-      width: 96%;
+      width: 101%;
+      height: 20%;
     }
     input {
       width: 200px;

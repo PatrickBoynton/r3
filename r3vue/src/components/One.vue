@@ -153,16 +153,17 @@ const handleDouble = () => {
 </template>
 <style scoped>
 video {
+    padding: 0;
+    margin: 0;
+    height: 100%;
     width: 100%;
-    height: 80%;
-    margin-left: 30px;
+    object-fit: contain;
+    aspect-ratio: 16 / 9;
 }
 
 .one {
     height: 98vh;
     width: 61vw;
-    margin-left: 20px;
-    padding-bottom: 90px;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -178,15 +179,41 @@ video {
 }
 
 .section {
-    border: 2px solid #ffdb60;
+    //background-color: #00be88;
+    background-image: linear-gradient(#2c725f 2%, #00be88 40%);
     width: 100%;
     display: flex;
     justify-content: center;
 }
 
+.section button {
+    background-color: #180f36;
+    font-size: 40px;
+    padding: 20px;
+}
+
+.section button:hover {
+    background-color: #d04c82;
+    border: 2px solid #180f36;
+}
+
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
+    .section {
+        height: 90px;
+        width: 100%;
+        justify-content: space-around;
+    }
+
+    .section button {
+        font-size: 20px;
+    }
+
     .one {
+    }
+
+    video {
+        height: 100%;
     }
 }
 </style>

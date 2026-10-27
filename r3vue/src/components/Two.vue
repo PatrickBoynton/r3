@@ -25,24 +25,29 @@ const handlePickedVideo = async (vid: any) => {
 </template>
 <style scoped>
 .two {
-  margin-left: 33%;
+    margin-left: 33%;
 }
 
 ul {
-    height: 90vh;
+    height: 92vh;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
 }
+li:first-child {
+  margin-top: 0;
+}
 
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
     ul {
-        width: 100%;
+      height: 89vh;
+      width: 100%;
     }
-
     .two {
+        width: 40%;
+        margin-left: 340px;
     }
 }
 </style>

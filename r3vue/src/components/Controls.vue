@@ -59,10 +59,12 @@ const handleCurrentPlayTime = () => {
         <h2>
             {{ video?.title || "Click the RV button or click a video card." }}
         </h2>
-        <button @click="handlePlayToggle">P</button>
-        <h2 class="time">
+        <button @click="handlePlayToggle">
+            <img src="/Play.svg" alt="" />
+        </button>
+        <h3 class="time">
             {{ convertToPlayTime(currentPlayTime as number) }}
-        </h2>
+        </h3>
         <input
             type="range"
             name="test"
@@ -71,14 +73,20 @@ const handleCurrentPlayTime = () => {
             v-model="currentPlayTime"
             min="0"
             :max="video?.duration" />
-        <h2 class="time">
+        <h3 class="time">
             {{
                 convertToPlayTime((video?.duration as number) - currentPlayTime)
             }}
-        </h2>
-        <button @click="handleMuteToggle">M</button>
-        <button @click="handleFullScreenToggle">FS</button>
-        <button @click="handleResetPlayTime">RS</button>
+        </h3>
+        <button @click="handleMuteToggle">
+            <img src="/volume-2.svg" alt="" />
+        </button>
+        <button @click="handleFullScreenToggle">
+            <img src="/maximize.svg" />
+        </button>
+        <button @click="handleResetPlayTime">
+            <img src="/rotate-ccw.svg" />
+        </button>
     </div>
 </template>
 
@@ -88,30 +96,37 @@ const handleCurrentPlayTime = () => {
     justify-content: center;
     align-content: center;
     align-items: center;
-    width: 90%;
-}
-h2 {
-  display: flex;
-  margin-right: 20px;
-}
-.time {
     width: 100%;
+    margin-left: 20px;
+}
+
+h2 {
+    font-size: 33px;
+    margin-right: 20px;
+}
+
+.time {
+    display: flex;
+    width: 100%;
+}
+
+button {
+  justify-items: center;
 }
 
 input[type="range"] {
     appearance: none;
     width: 150%;
+    margin: 20px;
 }
 
 input[type="range"]::-webkit-slider-runnable-track {
-    border: 2px solid #ffdb60;
-    height: 5px;
-    background-color: #b19849;
-    margin: 0 5px;
+    height: 30px;
+    background-color: #c92a6f;
 }
 
 input[type="range"]::-moz-range-track {
-    border: 2px solid #ffdb60;
+    border: 2px solid #00be88;
     height: 5px;
     background-color: #b19849;
     margin: 0 5px;
@@ -119,20 +134,57 @@ input[type="range"]::-moz-range-track {
 
 input[type="range"]::-moz-range-thumb {
     appearance: none;
-    border: 2px solid #ffdb60;
-    height: 20px;
+    border: 2px solid #00be88;
+    height: 30px;
     width: 5%;
     border-radius: 20px;
-    background-color: #201449;
+    background-color: #00be88;
     cursor: pointer;
 }
 
 input[type="range"]::-webkit-slider-thumb {
     appearance: none;
-    border: 2px solid #ffdb60;
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     border-radius: 20px;
-    background-color: #201449;
+    background-color: #00be88;
+}
+
+@supports (hanging-punctuation: first) and (font: -apple-system-body) and
+    (-webkit-appearance: none) {
+    .name {
+        width: 100%;
+        margin-bottom: 50px;
+    }
+
+    h2 {
+        font-size: 25px;
+        width: 100%;
+    }
+
+    button {
+        padding: 3px;
+        margin: 5px;
+        font-size: 25px;
+    }
+
+    input[type="range"] {
+        width: 200%;
+        height: 20px;
+    }
+
+    input[type="range"]::-webkit-slider-runnable-track {
+        height: 10px;
+        background-color: #c92a6f;
+    }
+
+    input[type="range"]::-webkit-slider-thumb {
+        appearance: none;
+        border: 5px solid #ffdb60;
+        height: 10px;
+        width: 10px;
+        border-radius: 20px;
+        background-color: #432995;
+    }
 }
 </style>
