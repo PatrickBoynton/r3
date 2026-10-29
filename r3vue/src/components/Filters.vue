@@ -53,6 +53,9 @@ const onVideoUploadPressed = () => {
         <button @click="onVideoUploadPressed">UL</button>
         <button @click="onResetMetaData">DVS</button>
     </div>
+      <h2>
+            {{ video?.title || "Click the RV button or click a video card." }}
+      </h2>
     <OverviewModal
         v-if="showOverview"
         :ipAddress="ipAddress"
@@ -61,7 +64,7 @@ const onVideoUploadPressed = () => {
 </template>
 <style lang="css" scoped>
 .controls {
-     background-image: linear-gradient(#2c725f 2%, #00be88 40%);
+     background-image: linear-gradient(#2c725f 5%, #00be88 6%, #2c725f 100%);
     border-radius: 5px;
     width: 100%;
     padding: 20px;
@@ -128,6 +131,12 @@ select {
 .overview-modal button {
     width: 90%;
 }
+h2 {
+  font-size: 50px;
+  background: linear-gradient(#432995, #c92a6f 60%);
+  background-clip:  text;
+ -webkit-text-fill-color: transparent;
+}
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
     .controls {
@@ -136,6 +145,9 @@ select {
     }
     input {
       width: 200px;
+    }
+    h2 {
+      font-size: 25px;
     }
 }
 </style>

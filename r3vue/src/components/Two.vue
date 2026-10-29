@@ -13,6 +13,12 @@ const handlePickedVideo = async (vid: any) => {
 </script>
 <template>
     <div class="two">
+        <div class="section">
+            <button>Videos</button>
+            <button>Tutorials</button>
+            <button>Movies</button>
+            <button>Tags</button>
+        </div>
         <ul>
             <VideoCard
                 :ipAddress="ipAddress"
@@ -25,7 +31,22 @@ const handlePickedVideo = async (vid: any) => {
 </template>
 <style scoped>
 .two {
-    margin-left: 33%;
+    //margin-left: 33%;
+    width: 85%;
+}
+
+.section {
+    //background-color: #00be88;
+    background-image: linear-gradient(#2c725f 5%, #00be88 6%, #2c725f 100%);
+    width: 92%;
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 1vh;
+    margin-left: 1vw;
+}
+
+.section button {
+    background-color: #201449;
 }
 
 ul {
@@ -35,19 +56,18 @@ ul {
     flex-direction: column;
     align-items: center;
 }
+
 li:first-child {
-  margin-top: 0;
+    margin-top: 0;
 }
 
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
     ul {
-      height: 89vh;
-      width: 100%;
     }
+
     .two {
-        width: 40%;
-        margin-left: 340px;
+        //width: 79%;
     }
 }
 </style>

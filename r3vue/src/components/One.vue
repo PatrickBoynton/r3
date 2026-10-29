@@ -117,12 +117,6 @@ const handleDouble = () => {
 </script>
 <template>
     <div class="one">
-        <div class="section">
-            <button>Videos</button>
-            <button>Tutorials</button>
-            <button>Movies</button>
-            <button>Tags</button>
-        </div>
         <video
             ref="videoRef"
             :src="video?.url"
@@ -155,35 +149,28 @@ const handleDouble = () => {
 video {
     padding: 0;
     margin: 0;
-    height: 100%;
+    max-height: 90vh;
     width: 100%;
     object-fit: contain;
     aspect-ratio: 16 / 9;
 }
 
 .one {
-    height: 98vh;
-    width: 61vw;
+    width: 70vw;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-bottom: 13%;
 }
+
 
 .name {
     display: flex;
 }
 
 .name h2 {
-    margin: 10px;
-}
-
-.section {
-    //background-color: #00be88;
-    background-image: linear-gradient(#2c725f 2%, #00be88 40%);
-    width: 100%;
-    display: flex;
-    justify-content: center;
+    //margin: 10px;
 }
 
 .section button {
@@ -199,21 +186,9 @@ video {
 
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
-    .section {
-        height: 90px;
-        width: 100%;
-        justify-content: space-around;
-    }
-
-    .section button {
-        font-size: 20px;
-    }
-
     .one {
-    }
-
-    video {
-        height: 100%;
+      width: 61vw;
+      margin-bottom: 27vh;
     }
 }
 </style>

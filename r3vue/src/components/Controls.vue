@@ -56,9 +56,6 @@ const handleCurrentPlayTime = () => {
 
 <template>
     <div class="name">
-        <h2>
-            {{ video?.title || "Click the RV button or click a video card." }}
-        </h2>
         <button @click="handlePlayToggle">
             <img src="/Play.svg" alt="" />
         </button>
@@ -101,7 +98,7 @@ const handleCurrentPlayTime = () => {
 }
 
 h2 {
-    font-size: 33px;
+    font-size: 50px;
     margin-right: 20px;
 }
 
@@ -122,7 +119,8 @@ input[type="range"] {
 
 input[type="range"]::-webkit-slider-runnable-track {
     height: 30px;
-    background-color: #c92a6f;
+    //background-color: #c92a6f;
+    background-image: linear-gradient(#432995, #c92a6f 80%);
 }
 
 input[type="range"]::-moz-range-track {
@@ -148,13 +146,13 @@ input[type="range"]::-webkit-slider-thumb {
     width: 30px;
     border-radius: 20px;
     background-color: #00be88;
+    background-image: linear-gradient(#432995, #00be88 80%);
 }
 
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
     .name {
         width: 100%;
-        margin-bottom: 50px;
     }
 
     h2 {
