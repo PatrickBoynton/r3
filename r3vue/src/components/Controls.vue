@@ -154,7 +154,6 @@ input[type="range"]::-webkit-slider-thumb {
     .name {
         width: 100%;
     }
-
     h2 {
         font-size: 25px;
         width: 100%;

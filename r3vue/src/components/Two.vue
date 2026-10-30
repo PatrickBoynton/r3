@@ -13,12 +13,12 @@ const handlePickedVideo = async (vid: any) => {
 </script>
 <template>
     <div class="two">
-        <div class="section">
-            <button>Videos</button>
-            <button>Tutorials</button>
-            <button>Movies</button>
-            <button>Tags</button>
-        </div>
+<!--        <div class="section">-->
+<!--            <button>Videos</button>-->
+<!--            <button>Tutorials</button>-->
+<!--            <button>Movies</button>-->
+<!--            <button>Tags</button>-->
+<!--        </div>-->
         <ul>
             <VideoCard
                 :ipAddress="ipAddress"

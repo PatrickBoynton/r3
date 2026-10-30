@@ -4,7 +4,7 @@ import { type Video } from "../types"
 import OverviewModal from "./OverviewModal.vue"
 import SelectVideoFilter from "./SelectVideoFilter.vue"
 import { ref } from "vue"
-import Modal from "./Modal.vue";
+import Modal from "./Modal.vue"
 
 const props = defineProps<{
     ipAddress: string
@@ -22,6 +22,11 @@ const onResetMetaData = async () => {
     videos.value = await Requests.getVideos(props.ipAddress)
 }
 
+const onResetPlayCount = async () => {
+    await Requests.resetPlayCount(props.ipAddress)
+    videos.value = await Requests.getVideos(props.ipAddress)
+}
+
 const onRandomVideoSelect = async () => {
     const randomVideo: Video = await Requests.getRandomVideo(
         props.ipAddress,
@@ -32,15 +37,16 @@ const onRandomVideoSelect = async () => {
 }
 
 const onRandomNewVideoSelect = async () => {
-    const newRandomVideo: Video = await Requests.getRandomVideo(
-        props.ipAddress,
-        "?" + selectionOption.value + "&played=false" || "?played=false",
-    )
-    video.value = newRandomVideo
+    // const newRandomVideo: Video = await Requests.getRandomVideo(
+    //     props.ipAddress,
+    //     "?" + selectionOption.value + "&played=false" || "?played=false",
+    // )
+    // video.value = newRandomVideo
+    video.value = await Requests.getNewRandomVideo(props.ipAddress)
     videos.value = await Requests.getVideos(props.ipAddress)
 }
 const onVideoUploadPressed = () => {
-  showModal.value = true
+    showModal.value = true
 }
 </script>
 <template>
@@ -48,30 +54,31 @@ const onVideoUploadPressed = () => {
         <SelectVideoFilter v-model:selection-option="selectionOption" />
         <button @click="onRandomVideoSelect">RV</button>
         <button @click="onRandomNewVideoSelect">RNV</button>
-        <input @input="handleInput" type="text" id="search" name="search"/>
+        <input @input="handleInput" type="text" id="search" name="search" />
         <button @click="showOverview = true">OV</button>
-        <button @click="onVideoUploadPressed">UL</button>
-        <button @click="onResetMetaData">DVS</button>
+        <span class="resetStatus">
+            <button @click="onVideoUploadPressed">UL</button>
+            <button @click="onResetPlayCount">RPC</button>
+            <button @click="onResetMetaData">DVS</button>
+        </span>
     </div>
-      <h2>
-            {{ video?.title || "Click the RV button or click a video card." }}
-      </h2>
+    <h2>
+        {{ video?.title || "Click the RV button or click a video card." }}
+    </h2>
     <OverviewModal
         v-if="showOverview"
         :ipAddress="ipAddress"
         v-model:show-overview="showOverview" />
-    <Modal :ipAddress="ipAddress"/>
+    <Modal :ipAddress="ipAddress" />
 </template>
 <style lang="css" scoped>
 .controls {
-     background-image: linear-gradient(#2c725f 5%, #00be88 6%, #2c725f 100%);
+    background-image: linear-gradient(#2c725f 5%, #00be88 6%, #2c725f 100%);
     border-radius: 5px;
     width: 100%;
-    padding: 20px;
     display: flex;
     justify-content: center;
     align-items: center;
-    //margin-bottom: 15%;
 }
 
 select {
@@ -81,18 +88,23 @@ select {
     color: #ffdb60;
     background-color: #180f36;
     padding: 10px;
+    width: 10%;
 }
+
 .controls button {
-  background-color: #180f36;
+    background-color: #180f36;
 }
+
 .controls button:hover {
-  background-color: #d04c82;
-  border: 2px solid #180f36;
+    background-color: #d04c82;
+    border: 2px solid #180f36;
 }
+
 .controls input {
-  border: none;
-  background-color: #201449;
+    border: none;
+    background-color: #201449;
 }
+
 .modal {
     position: fixed;
     top: 50%;
@@ -131,23 +143,43 @@ select {
 .overview-modal button {
     width: 90%;
 }
+
 h2 {
-  font-size: 50px;
-  background: linear-gradient(#432995, #c92a6f 60%);
-  background-clip:  text;
- -webkit-text-fill-color: transparent;
+    font-size: 50px;
+    background: linear-gradient(#432995, #c92a6f 60%);
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
+
+.resetStatus {
+    margin-left: 30%;
+}
+
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
     .controls {
-      width: 101%;
-      height: 20%;
+        width: 100%;
+        height: 12vh;
     }
+    select {
+    }
+    .controls input {
+      border: none;
+      background-color: #201449;
+      width: 10vw;
+    }
+    .resetStatus {
+      display: flex;
+      width: 20%;
+      margin: 0 120px 0 0;
+    }
+
     input {
-      width: 200px;
+        width: 200px;
     }
+
     h2 {
-      font-size: 25px;
+        font-size: 25px;
     }
 }
 </style>

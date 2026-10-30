@@ -164,7 +164,6 @@ video {
     margin-bottom: 13%;
 }
 
-
 .name {
     display: flex;
 }
@@ -187,8 +186,8 @@ video {
 @supports (hanging-punctuation: first) and (font: -apple-system-body) and
     (-webkit-appearance: none) {
     .one {
-      width: 61vw;
-      margin-bottom: 27vh;
+        width: 61vw;
+        margin-bottom: 50vh;
     }
 }
 </style>

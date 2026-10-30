@@ -25,6 +25,22 @@ class Requests {
         return await response.json()
     }
 
+    static async getNewRandomVideo(ipAddress: string, query?: string): Promise<Video> {
+        let response;
+        if(query) {
+            response = await fetch(
+            `http://${ipAddress}:5001/videos/random/new${query}`,
+        )
+
+        } else {
+            response = await fetch(
+            `http://${ipAddress}:5001/videos/random/new`,
+        )
+        }
+
+        return await response.json()
+    }
+
     static async getVideoContext(
         ipAddress: string,
     ): Promise<VideoContext | undefined> {
@@ -44,6 +60,15 @@ class Requests {
             headers: {
                 "Content-Type": "application/json",
             },
+        })
+    }
+
+    static async resetPlayCount(ipAddress: string) {
+        await fetch(`http://${ipAddress}:5001/videos`, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json'
+            }
         })
     }
 
