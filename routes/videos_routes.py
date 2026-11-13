@@ -4,13 +4,28 @@ from datetime import datetime
 from flask import request
 from flask.views import MethodView
 from flask_smorest import Blueprint
-from sqlalchemy import desc, func
+from sqlalchemy import desc
+from sqlalchemy import func
 
 from db import db
 from models import Video, VideoContext, VideoStatus, create_video
 from schemas import VideoSchema, RandomVideoQueryArgs
 
 blueprint = Blueprint("videos", __name__, description="Operations on videos")
+
+
+def update_random_video(random_video):
+    random_video.video_status.selection_count += 1
+    random_video.video_status.played = True
+    random_video.video_status.last_played = datetime.now()
+
+    print(f"Video selected: {random_video.title}", flush=True)
+    video_context = VideoContext.query.first()
+    video_context.video_plays += 1
+    video_context.current_video = random_video.id
+    db.session.add(video_context)
+
+    db.session.commit()
 
 
 # http://192.168.1.156:5000/
@@ -49,6 +64,16 @@ class VideoList(MethodView):
         db.session.commit()
         print(f"Video status reset.")
         return ""
+
+    @blueprint.response(204)
+    def patch(self):
+        videos = Video.query.all()
+        for video in videos:
+            video.video_status.play_count = 0
+            video.video_status.selection_count = 0
+
+        db.session.commit()
+        print("Video plays and selections reset.")
 
 
 # http://192.168.1.156:5000/guid
@@ -116,55 +141,56 @@ class SingleVideo(MethodView):
 class VideoRandom(MethodView):
     @blueprint.arguments(RandomVideoQueryArgs, location="query")
     @blueprint.response(200, VideoSchema)
-    def get(self, filter_args):
-        count = Video.query.count()
-        min_plays = db.session.query(func.min(VideoStatus.selection_count)).scalar()
-        videos = (db.session.query(Video)
-                  .join(VideoStatus)
-                  .filter(VideoStatus.selection_count == min_plays)
-                  .all())
-        if "played" in filter_args:
-            random_video = random.choice(videos)
-            if "lte" in filter_args:
-                random_videos = (
-                    (db.session.query(Video)
-                     .join(VideoStatus)
-                     .filter(VideoStatus.selection_count == min_plays,
-                             Video.duration <= int(filter_args["lte"]) * 60)).all()
-                )
-                random_video = random.choice(random_videos)
-            if "gte" in filter_args:
-                random_videos = (
-                    Video.query.join(VideoStatus)
-                    .filter(
-                            VideoStatus.selection_count == min_plays,
-                            Video.duration >= int(filter_args["gte"]) * 60,
-                    ).all()
-                )
-                random_video = random.choice(random_videos)
-        elif "lte" in filter_args:
-            random_videos = (
-                Video.query.filter(Video.duration <= int(filter_args["lte"] * 60)).all()
-            )
-            random_video = random.choice(random_videos)
-        elif "gte" in filter_args:
-            random_videos = (
-                Video.query.filter(Video.duration >= int(filter_args["gte"] * 60)).all()
-            )
-            random_video = random.choice(random_videos)
-        else:
-            random_video = Video.query.offset(random.randrange(count)).first()
-            # random_video = random.choice(random_videos)
+    def get(self, args):
+        videos = db.session.query(Video).join(VideoStatus).all()
 
-        random_video.video_status.selection_count += 1
-        random_video.video_status.played = True
-        random_video.video_status.last_played = datetime.now()
+        print(f"request url: {request.url}", flush=True)
 
-        print(f"random video selected: {random_video.title}", flush=True)
-        video_context = VideoContext.query.first()
-        video_context.video_plays += 1
-        video_context.current_video = random_video.id
-        db.session.add(video_context)
+        filters = {
+            "lte": lambda v: Video.duration <= v * 60,
+            "gte": lambda v: Video.duration >= v * 60
+        }
+
+        for arg, condition in filters.items():
+            value = request.args.get(arg)
+            print(f"value: {value}", flush=True)
+            if value is not None:
+                # Keep int around value, it doesn't read value as an int otherwise, because it is a string naturally.
+                videos = db.session.query(Video).where(condition(int(value))).all()
+        # Closer to 1, stronger variety, closer to 0 more repeats.
+        #  add an ** and a number after the divisor to tune:  (video.video_status.selection_count + 1) ** 2
+        weights = [1 / (video.video_status.selection_count + 1) for video in videos]
+
+        random_video = random.choices(videos, weights=weights, k=1)[0]
+        print(f"Video duration: {random_video.duration / 60}", flush=True)
+
+        update_random_video(random_video)
+
+        return random_video
+
+
+@blueprint.route("/videos/random/new")
+class NewRandomVideo(MethodView):
+    @blueprint.arguments(RandomVideoQueryArgs, location="query")
+    @blueprint.response(200, VideoSchema)
+    def get(self, args):
+        minimum_plays = db.session.query(func.min(VideoStatus.selection_count)).scalar()
+        videos = db.session.query(Video).join(VideoStatus).filter(VideoStatus.selection_count == minimum_plays).all()
+
+        filters = {
+            "lte": lambda v: Video.duration <= v * 60,
+            "gte": lambda v: Video.duration >= v * 60
+        }
+
+        for arg, condition in filters.items():
+            value = request.args.get(arg)
+            print(f"value: {value}", flush=True)
+            if value is not None:
+                videos = db.session.query(Video).where(condition(int(value))).all()
+
+        random_video = random.choice(videos)
+
+        update_random_video(random_video)
 
         db.session.commit()
         return random_video
