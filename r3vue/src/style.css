@@ -32,6 +32,9 @@ li {
     justify-content: center;
     align-items: center;
 }
+h2 {
+    font-size: 150px;
+}
 
 button {
     font-family:"Orbitron", system-ui, Avenir, Helvetica, Arial, sans-serif;
