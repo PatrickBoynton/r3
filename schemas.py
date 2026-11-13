@@ -37,6 +37,5 @@ class VideoContextSchema(Schema):
 
 
 class RandomVideoQueryArgs(Schema):
-    played = fields.Boolean(required=False)
     lte = fields.Integer(required=False)
     gte = fields.Integer(required=False)
