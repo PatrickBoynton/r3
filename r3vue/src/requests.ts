@@ -18,16 +18,24 @@ class Requests {
         ipAddress: string,
         query?: string,
     ): Promise<Video> {
-        const response = await fetch(
+        let response;
+        if(query !== undefined) {
+            response = await fetch(
             `http://${ipAddress}:5001/videos/random${query}`,
         )
+        } else {
+            response = await fetch(
+            `http://${ipAddress}:5001/videos/random`,
+        )
+
+        }
 
         return await response.json()
     }
 
     static async getNewRandomVideo(ipAddress: string, query?: string): Promise<Video> {
         let response;
-        if(query) {
+        if(query !== undefined) {
             response = await fetch(
             `http://${ipAddress}:5001/videos/random/new${query}`,
         )
