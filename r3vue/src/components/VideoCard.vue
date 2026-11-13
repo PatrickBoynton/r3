@@ -6,13 +6,12 @@ const video = defineModel("video")
 </script>
 <template>
     <li>
-        <h2>{{ video?.title }}</h2>
+<!--      :style="{ fontSize: video?.title.length < 41 ? '150px' : '120px' }-->
+        <h2 :style="{fontSize: video?.title.length < 41 ? '80px' : '20px'}">
+          {{ video?.title }}
+        </h2>
         <div class="details">
-            <h4>{{ "video length - " + convertToPlayTime(video.duration) }}</h4>
-            <!--            <h4>-->
-            <!--                <span>uploaded date - </span>-->
-            <!--                {{ formatDate(video.uploaded_date) }}-->
-            <!--            </h4>-->
+            <h4>{{ "video play count - " + video?.video_status?.play_count }}</h4>
             <h4>
                 <span>number of times picked - </span>
                 {{ video.video_status.selection_count }}

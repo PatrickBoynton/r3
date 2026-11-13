@@ -27,22 +27,17 @@ const onResetPlayCount = async () => {
     videos.value = await Requests.getVideos(props.ipAddress)
 }
 
-const onRandomVideoSelect = async () => {
+const onRandomVideoSelect = async (query?: string) => {
     const randomVideo: Video = await Requests.getRandomVideo(
         props.ipAddress,
-        "?" + selectionOption.value || "",
+        "?" + query,
     )
     video.value = randomVideo
     videos.value = await Requests.getVideos(props.ipAddress)
 }
 
-const onRandomNewVideoSelect = async () => {
-    // const newRandomVideo: Video = await Requests.getRandomVideo(
-    //     props.ipAddress,
-    //     "?" + selectionOption.value + "&played=false" || "?played=false",
-    // )
-    // video.value = newRandomVideo
-    video.value = await Requests.getNewRandomVideo(props.ipAddress)
+const onRandomNewVideoSelect = async (query?: string) => {
+    video.value = await Requests.getNewRandomVideo(props.ipAddress, "?" + query)
     videos.value = await Requests.getVideos(props.ipAddress)
 }
 const onVideoUploadPressed = () => {
@@ -52,8 +47,13 @@ const onVideoUploadPressed = () => {
 <template>
     <div class="controls">
         <SelectVideoFilter v-model:selection-option="selectionOption" />
-        <button @click="onRandomVideoSelect">RV</button>
-        <button @click="onRandomNewVideoSelect">RNV</button>
+        <button @click="() => onRandomVideoSelect(selectionOption as string)">
+            RV
+        </button>
+        <button
+            @click="() => onRandomNewVideoSelect(selectionOption as string)">
+            RNV
+        </button>
         <input @input="handleInput" type="text" id="search" name="search" />
         <button @click="showOverview = true">OV</button>
         <span class="resetStatus">
@@ -62,7 +62,7 @@ const onVideoUploadPressed = () => {
             <button @click="onResetMetaData">DVS</button>
         </span>
     </div>
-    <h2>
+    <h2 :style="{ fontSize: video?.title.length < 41 ? '150px' : '120px' }">
         {{ video?.title || "Click the RV button or click a video card." }}
     </h2>
     <OverviewModal
@@ -145,7 +145,7 @@ select {
 }
 
 h2 {
-    font-size: 50px;
+    font-size: 150px;
     background: linear-gradient(#432995, #c92a6f 60%);
     background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -161,17 +161,20 @@ h2 {
         width: 100%;
         height: 12vh;
     }
+
     select {
     }
+
     .controls input {
-      border: none;
-      background-color: #201449;
-      width: 10vw;
+        border: none;
+        background-color: #201449;
+        width: 10vw;
     }
+
     .resetStatus {
-      display: flex;
-      width: 20%;
-      margin: 0 120px 0 0;
+        display: flex;
+        width: 20%;
+        margin: 0 120px 0 0;
     }
 
     input {
@@ -179,7 +182,7 @@ h2 {
     }
 
     h2 {
-        font-size: 25px;
+        font-size: 80px!important;
     }
 }
 </style>
